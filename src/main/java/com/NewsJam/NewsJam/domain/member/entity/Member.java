@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -30,6 +31,9 @@ public class Member {
     @Column(name = "scrap_list")
     @OneToMany(mappedBy = "memberId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scrap> scrapList;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Authority> authorities;
 
     public void addScrap(Scrap scrap) {
         scrapList.add(scrap);
