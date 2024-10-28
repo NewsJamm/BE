@@ -2,9 +2,9 @@ name: Toast Dev CI/CD
 
 on:
   push:
-    branches: [ "ci/#7-cicd" ]
+    branches: [ "dev" ]
   pull_request:
-    branches: [ "ci/#7-cicd" ]
+    branches: [ "dev" ]
   workflow_dispatch:
 
 
