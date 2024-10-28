@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### 중요 파일 ###
+src/main/resources/*.yml
+src/main/resources/*.properties
+
+### OS 파일 ###
+.DS_store
