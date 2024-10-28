@@ -2,15 +2,14 @@ package com.NewsJam.NewsJam.domain.member.entity;
 
 import com.NewsJam.NewsJam.domain.scrap.entity.Scrap;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Data
+@Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "member")
@@ -38,5 +37,19 @@ public class Member {
     public void addScrap(Scrap scrap) {
         scrapList.add(scrap);
         scrap.setMemberId(this);
+    }
+
+    public void addAuthority(Authority authority) {
+        authorities.add(authority);
+        authority.setMember(this);
+    }
+
+    public void setRole(Authority authority) {
+        authorities.add(authority);
+        authority.setMember(this);
+    }
+
+    public Authority getRole() {
+        return authorities.get(0);
     }
 }
