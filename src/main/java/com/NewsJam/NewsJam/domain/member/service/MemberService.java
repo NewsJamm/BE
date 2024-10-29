@@ -1,9 +1,10 @@
 package com.NewsJam.NewsJam.domain.member.service;
 
-import org.springframework.stereotype.Service;
+import com.NewsJam.NewsJam.domain.member.entity.Member;
+import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
+import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
 
-@Service
 public interface MemberService {
-
-
+    Member join(MemberRequestDto.Request request);
+    void updateKeywords(InterestingKeywordsRequestDto.Request request);
 }
