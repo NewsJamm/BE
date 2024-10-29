@@ -2,13 +2,12 @@ package com.NewsJam.NewsJam.global.config;
 
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
 import com.NewsJam.NewsJam.domain.member.resolver.LoginMemberArgumentResolver;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.List;
 
 
 @Configuration
@@ -19,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("*")
                 .allowCredentials(true)
                 .maxAge(3600)
                 .allowedHeaders("*")
