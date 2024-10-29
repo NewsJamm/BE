@@ -10,6 +10,8 @@ public class MemberRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request{
-
+        String loginId;
+        String password;
+        String name;
     }
 }
