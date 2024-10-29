@@ -10,7 +10,8 @@ public enum ErrorStatus implements BaseCode{
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // member
-    _MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4002", "존재하지 않는 사용자입니다.");
+    _MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4002", "존재하지 않는 사용자입니다."),
+    _EXIST_LOGINID(HttpStatus.NOT_FOUND, "MEMBER4001", "이미 존재하는 사용자 아이디입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
