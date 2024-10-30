@@ -36,6 +36,12 @@ public class News {
     @Column(name = "news_category")
     private NewsCategory newsCategory;
 
+    @Column(name = "pubDate")
+    private String pubDate;
+
+    @Column(name = "originalLink")
+    private String originalLink;
+
     @Column(name = "vector_idx", unique = true)
     private Long vectorIdx;
 }

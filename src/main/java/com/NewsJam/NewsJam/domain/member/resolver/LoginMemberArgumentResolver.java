@@ -1,9 +1,10 @@
 package com.NewsJam.NewsJam.domain.member.resolver;
 
 import com.NewsJam.NewsJam.domain.member.entity.Member;
-import com.NewsJam.NewsJam.domain.member.exception.MemberNotExistException;
+import com.NewsJam.NewsJam.domain.member.exception.UserNotExistException;
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
 import com.NewsJam.NewsJam.global.annotation.LoginMember;
+import com.NewsJam.NewsJam.global.enums.statuscode.ErrorStatus;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +39,8 @@ public class LoginMemberArgumentResolver implements HandlerMethodArgumentResolve
 
         Member member = null;
         if (authentication != null) {
-            return memberRepository.findByLoginId((String)authentication.getPrincipal())
-                    .orElseThrow(() -> new MemberNotExistException());
+            return memberRepository.findByLoginId((String) authentication.getPrincipal())
+                    .orElseThrow(() -> new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST));
         } else {
             log.info("알 수 없는 인증 타입");
             throw new IllegalStateException("지원하지 않는 인증 타입입니다.");
