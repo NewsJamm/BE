@@ -3,6 +3,7 @@ package com.NewsJam.NewsJam.global.security.config;
 import com.NewsJam.NewsJam.global.security.jwt.filter.JwtTokenFilter;
 import com.NewsJam.NewsJam.global.security.jwt.filter.JwtTokenProvider;
 import com.NewsJam.NewsJam.global.security.service.CustomUserDetailService;
+import com.NewsJam.NewsJam.global.security.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final CustomUserDetailService customUserDetailService;
+    private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
@@ -41,6 +43,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().authenticated()
                 )
+
+                // OAuth2
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .userInfoEndpoint(userInfo ->
+                                userInfo.userService(customOAuth2UserService) // OAuth2로 받아온 사용자 정보를 처리
+                        )
+                )
+
+                // jwt
                 .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .userDetailsService(customUserDetailService);
 

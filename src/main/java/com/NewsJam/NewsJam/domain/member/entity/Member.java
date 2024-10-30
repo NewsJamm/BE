@@ -3,14 +3,16 @@ package com.NewsJam.NewsJam.domain.member.entity;
 import com.NewsJam.NewsJam.domain.scrap.entity.Scrap;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "member")
@@ -35,8 +37,30 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Authority> authorities;
 
+    @Column(name = "keywords")
+    @ElementCollection
+    private List<String> interestingKeywords = new ArrayList<>();
+
     public void addScrap(Scrap scrap) {
         scrapList.add(scrap);
         scrap.setMemberId(this);
+    }
+
+    public void addAuthority(Authority authority) {
+        authorities.add(authority);
+        authority.setMember(this);
+    }
+
+    public void addInterestingKeywords(List<String> keywords) {
+        interestingKeywords.addAll(keywords);
+    }
+
+    public void setRole(Authority authority) {
+        authorities.add(authority);
+        authority.setMember(this);
+    }
+
+    public Authority getRole() {
+        return authorities.get(0);
     }
 }

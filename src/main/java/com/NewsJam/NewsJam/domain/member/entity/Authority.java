@@ -2,12 +2,11 @@ package com.NewsJam.NewsJam.domain.member.entity;
 
 import com.NewsJam.NewsJam.domain.member.enums.Authorities;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "authority")
@@ -26,7 +25,7 @@ public class Authority {
     private Member member;
 
     // 연관 관계 편의 메서드
-    public void changeMember(Member member) {
+    public void setMember(Member member) {
         this.member = member;
     }
 }
