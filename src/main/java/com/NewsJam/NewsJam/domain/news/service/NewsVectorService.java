@@ -1,9 +1,9 @@
 package com.NewsJam.NewsJam.domain.news.service;
 
-import com.NewsJam.NewsJam.domain.news.entity.News;
-import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
+import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorRequestDTO;
+import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorResponseDTO.VectorizeResponseDTO;
 
 
 public interface NewsVectorService {
-	News saveNewsWithVector(String newsTitle, String newsContent, NewsCategory newsCategory);
+    VectorizeResponseDTO vectorizeNewsVector(NewsVectorRequestDTO.VectorizeRequestDTO request);
 }

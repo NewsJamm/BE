@@ -1,6 +1,5 @@
 package com.NewsJam.NewsJam.domain.news.service;
 
-import com.NewsJam.NewsJam.domain.news.entity.News;
 import com.NewsJam.NewsJam.domain.news.repository.NewsRepository;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIRequestDto;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIResponseDto;
@@ -80,18 +79,10 @@ public class NewsServiceImpl implements NewsService {
                             .title(getParsedTitle(rawTitle))
                             .build();
 
-                    News newsEntity = News.builder()
-                            .newsContent(item.get("description").asText())
-                            .originalLink(item.get("originallink").asText())
-                            .pubDate(item.get("pubDate").asText())
-                            .newsTitle(getParsedTitle(rawTitle))
-                            .build();
-
                     log.info("::newsData::\nDiscription : {}\nTitle : {}\nOriginalLink : {}\nPubDate : {}\n",
                             newsData.getDescription(), newsData.getTitle(), newsData.getOriginalLink(),
                             newsData.getPubDate());
 
-                    newsRepository.save(newsEntity);
                     responseDto.add(newsData);
                 }
             }
