@@ -5,16 +5,15 @@ import com.NewsJam.NewsJam.domain.news.repository.NewsRepository;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIRequestDto;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIResponseDto;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -38,7 +37,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public String getParsedTitle(String rawTitle) {
-        String result = rawTitle.replaceAll("&quot;|<b>|</b>", "");
+        String result = rawTitle.replaceAll("<b>|</b>", "");
 
         log.info("::parsed String : {}::", result);
         return result;
@@ -54,7 +53,7 @@ public class NewsServiceImpl implements NewsService {
                 .defaultHeader("X-Naver-Client-Secret", clientSecret)
                 .build();
 
-        for(int i = 0 ; i < keywords.getKeywords().size(); i++){
+        for (int i = 0; i < keywords.getKeywords().size(); i++) {
             String query = keywords.getKeywords().get(i);
 
             JsonNode response = client.get()
@@ -70,7 +69,7 @@ public class NewsServiceImpl implements NewsService {
                     .doOnNext(System.out::println)
                     .block();
 
-            if(response != null && response.has("items")){
+            if (response != null && response.has("items")) {
                 for (JsonNode item : response.get("items")) {
                     String rawTitle = item.get("title").asText();
 
@@ -82,13 +81,15 @@ public class NewsServiceImpl implements NewsService {
                             .build();
 
                     News newsEntity = News.builder()
-                            .title(rawTitle)
-                            .description(item.get("description").asText())
+                            .newsContent(item.get("description").asText())
                             .originalLink(item.get("originallink").asText())
                             .pubDate(item.get("pubDate").asText())
-                            .title(getParsedTitle(rawTitle))
+                            .newsTitle(getParsedTitle(rawTitle))
                             .build();
-                    log.info("::newsData::\nDiscription : {}\nTitle : {}\nOriginalLink : {}\nPubDate : {}\n",newsData.getDescription(), newsData.getTitle(), newsData.getOriginalLink(), newsData.getPubDate());
+
+                    log.info("::newsData::\nDiscription : {}\nTitle : {}\nOriginalLink : {}\nPubDate : {}\n",
+                            newsData.getDescription(), newsData.getTitle(), newsData.getOriginalLink(),
+                            newsData.getPubDate());
 
                     newsRepository.save(newsEntity);
                     responseDto.add(newsData);
