@@ -11,11 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "scrap")
@@ -31,9 +32,9 @@ public class Scrap {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member memberId;
+    private Member member;
 
-    public void setMember(Member member) {
-        this.memberId = member;
+    public void changeMember(Member member) {
+        this.member = member;
     }
 }
