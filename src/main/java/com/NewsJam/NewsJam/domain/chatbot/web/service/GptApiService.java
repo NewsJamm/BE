@@ -2,6 +2,7 @@ package com.NewsJam.NewsJam.domain.chatbot.web.service;
 
 import com.NewsJam.NewsJam.domain.chatbot.web.dto.ChatRequestDTO;
 import com.NewsJam.NewsJam.domain.news.entity.News;
+import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
 import com.NewsJam.NewsJam.domain.news.repository.NewsRepository;
 import com.NewsJam.NewsJam.global.enums.statuscode.ErrorStatus;
 import com.NewsJam.NewsJam.global.exception.GeneralException;
@@ -36,8 +37,46 @@ public class GptApiService implements ChatBotService {
         return generateResponse(prompt);
     }
 
+    @Override
+    public NewsCategory getNewsCategory(String content) {
+        String categoryPrompt = generateNewsCategoryPrompt(content);
+        String categoryAnswer = generateResponse(categoryPrompt).block();
+
+        switch (categoryAnswer) {
+            case "정치":
+                return NewsCategory.정치;
+
+            case "사회":
+                return NewsCategory.사회;
+
+            case "스포츠":
+                return NewsCategory.스포츠;
+
+            case "연예":
+                return NewsCategory.연예;
+
+            case "IT":
+                return NewsCategory.IT;
+
+            case "건강":
+                return NewsCategory.건강;
+
+            case "교육":
+                return NewsCategory.교육;
+
+            default:
+                return NewsCategory.기타;
+        }
+
+    }
+
     private String generatePrompt(String chatMessage, String newsSummary) {
         return "아래의 뉴스 내용을 기반으로 질문에 대한 답변을 해줘.\n\n<뉴스 내용>\n" + newsSummary + "\n\n\n<질문 내용>\n" + chatMessage;
+    }
+
+    private String generateNewsCategoryPrompt(String content) {
+        return "다음의 뉴스 내용을 기반으로 해당하는 카테고리 분류를 알려줘. 카테고리는 주어진 카테고리 목록 내에서만 골라야 해. 카테고리 분류에 해당하는 단어만 답변해줘.\n\n<뉴스 내용>\n"
+                + content + "\n\n<카테고리 목록>\n정치\n사회\n경제\n스포츠\n연예\nIT\n건강\n교육\n기타";
     }
 
 
