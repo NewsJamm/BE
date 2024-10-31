@@ -9,6 +9,7 @@ import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
 import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
 import com.NewsJam.NewsJam.global.enums.statuscode.ErrorStatus;
+import com.NewsJam.NewsJam.global.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +31,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
         log.info("Member request: {}", request);
         if(memberRepository.findAllByLoginId(request.getLoginId()).isEmpty()){
             log.info("Member already exists");
-            throw new ExistLoginIdException();
+            throw new GeneralException(ErrorStatus._MEMBER_NOT_EXIST);
         }
         String encodedPassword = pwEncoder.encode(request.getPassword());
 
