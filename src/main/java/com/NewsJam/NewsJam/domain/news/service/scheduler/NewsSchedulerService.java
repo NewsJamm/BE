@@ -1,6 +1,7 @@
 package com.NewsJam.NewsJam.domain.news.service.scheduler;
 
 import com.NewsJam.NewsJam.domain.chatbot.web.service.ChatBotService;
+import com.NewsJam.NewsJam.domain.news.converter.NewsConvertor;
 import com.NewsJam.NewsJam.domain.news.entity.Keyword;
 import com.NewsJam.NewsJam.domain.news.entity.News;
 import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
@@ -13,6 +14,7 @@ import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorResponseDTO.Extract
 import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorResponseDTO.VectorizeResponseDTO;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIRequestDto.Keywords;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIResponseDto.NewsData;
+import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -57,6 +59,17 @@ public class NewsSchedulerService {
         Collections.sort(wordList);
 
         log.info(":::: 뉴스 스케줄러 종료 ::::");
+    }
+
+    public List<NewsResponseDTO.HotTopicWord> getHotTopicWords(int wordCount) {
+        List<NewsResponseDTO.HotTopicWord> words = new ArrayList<>();
+        int len = Math.min(wordCount, wordList.size());
+        for (int i = 0; i < len; i++) {
+            Word word = wordList.get(i);
+            words.add(NewsConvertor.toHotTopicWord(word.getKeyword(), word.getNewsCount()));
+        }
+
+        return words;
     }
 
     private void saveNews(List<NewsData> news) {
