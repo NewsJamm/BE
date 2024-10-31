@@ -1,30 +1,29 @@
 package com.NewsJam.NewsJam.global.security.service;
 
 import com.NewsJam.NewsJam.domain.member.entity.Member;
+import com.NewsJam.NewsJam.domain.member.enums.AuthProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private Member member;
+    private Collection<? extends GrantedAuthority> authorityList;
 
-    public CustomUserDetails(Member member) {
+    public CustomUserDetails(Member member, Collection<? extends GrantedAuthority> authorityList) {
         this.member = member;
+        this.authorityList = authorityList;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return member.getAuthorities().stream()
-                .map(role -> new SimpleGrantedAuthority(role.getType().name()))
-                .collect(Collectors.toList());
+        return authorityList;
     }
 
     @Override
@@ -36,6 +35,15 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
         return member.getLoginId();
     }
+
+    public AuthProvider getAuthProvider() {
+        return member.getAuthProvider();
+    }
+
+    public String getProviderId() {
+        return member.getProviderId();
+    }
+
 
     @Override
     public boolean isAccountNonExpired() {
