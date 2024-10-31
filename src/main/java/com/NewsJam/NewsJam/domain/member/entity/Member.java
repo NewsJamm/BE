@@ -1,5 +1,6 @@
 package com.NewsJam.NewsJam.domain.member.entity;
 
+import com.NewsJam.NewsJam.domain.member.enums.AuthProvider;
 import com.NewsJam.NewsJam.domain.scrap.entity.Scrap;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,14 +22,21 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "login_id", nullable = false)
+    @Column(name = "login_id")
     private String loginId;
 
-    @Column(name = "login_pw", nullable = false)
+    @Column(name = "login_pw")
     private String loginPw;
 
     @Column(name = "member_name", nullable = false)
     private String memberName;
+
+    @Column(name = "auth_provider")
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
+    @Column(name = "provider_id")
+    private String providerId;
 
     @Column(name = "scrap_list")
     @OneToMany(mappedBy = "memberId", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -40,6 +48,9 @@ public class Member {
     @Column(name = "keywords")
     @ElementCollection
     private List<String> interestingKeywords = new ArrayList<>();
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
 
     public void addScrap(Scrap scrap) {
         scrapList.add(scrap);
@@ -63,4 +74,9 @@ public class Member {
     public Authority getRole() {
         return authorities.get(0);
     }
+
+    public void changeRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
+    }
+
 }
