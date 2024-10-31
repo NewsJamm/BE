@@ -26,8 +26,10 @@ public class MypageServiceImpl implements MypageService {
 
     @Override
     public ScrapNewsListResponseDto.ScrapNewsList scrapNewsList(Long memberId) {
+        log.info("Service method called memberId ={}",memberId);
         Optional<Member> findMember = memberRepository.findById(memberId);
         if (findMember.isEmpty()) {
+            log.info("::User Not Exist::");
             throw new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST);
         }
         Member found = findMember.get();
@@ -37,6 +39,7 @@ public class MypageServiceImpl implements MypageService {
         for(Scrap scrap : scrapList) {
             Optional<News> news = newsRepository.findByOriginalLink(scrap.getNewsUrl());
             if(news.isEmpty()) {
+                log.info("::Scrap Not Exist::");
                 throw new NewsNotExistException(ErrorStatus._NEWS_NOT_EXIST);
             }
             News getNews = news.get();
