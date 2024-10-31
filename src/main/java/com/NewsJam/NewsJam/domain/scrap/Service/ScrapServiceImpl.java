@@ -53,8 +53,8 @@ public class ScrapServiceImpl implements ScrapService {
     }
 
     @Override
-    public ScrapUndoResponseDto.ScrapUndoResponse scrapUndo(ScrapUndoRequestDto.ScrapUndoRequest scrapUndoRequestDto, Long memberId) {
-        Optional<Member> member = memberRepository.findById(memberId);
+    public ScrapUndoResponseDto.ScrapUndoResponse scrapUndo(ScrapUndoRequestDto.ScrapUndoRequest scrapUndoRequestDto) {
+        Optional<Member> member = memberRepository.findById(scrapUndoRequestDto.getMemberId());
         if(member.isEmpty()){
             log.info("::Member Not Exist !!!::");
             throw new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST);
@@ -73,10 +73,12 @@ public class ScrapServiceImpl implements ScrapService {
         scrapRepository.delete(scrap);
         memberRepository.save(scrapUndoMember);
 
-        return ScrapUndoResponseDto.ScrapUndoResponse.builder()
+        ScrapUndoResponseDto.ScrapUndoResponse response = ScrapUndoResponseDto.ScrapUndoResponse.builder()
                 .memberId(scrapUndoMember.getId())
                 .scrapId(scrapUndoRequestDto.getScrapId())
                 .build();
+
+        return response;
     }
 
 }
