@@ -34,7 +34,7 @@ public class NewsSchedulerService {
 
     private static Queue<Long> newsIdQueue = new ConcurrentLinkedQueue<>();
 
-    @Scheduled(fixedDelay = 180000)
+//    @Scheduled(fixedDelay = 180000)
     public void scheduled() {
         log.info(":::: 뉴스 스케줄러 실행 ::::");
 
