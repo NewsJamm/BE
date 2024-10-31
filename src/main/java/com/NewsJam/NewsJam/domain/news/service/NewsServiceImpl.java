@@ -35,9 +35,9 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public String getParsedTitle(String rawTitle) {
+    public String getParsedString(String rawTitle) {
         String result = rawTitle.replaceAll("<b>|</b>", "");
-
+        result = result.replaceAll("&quot;", "\"");
         log.info("::parsed String : {}::", result);
         return result;
     }
@@ -71,12 +71,13 @@ public class NewsServiceImpl implements NewsService {
             if (response != null && response.has("items")) {
                 for (JsonNode item : response.get("items")) {
                     String rawTitle = item.get("title").asText();
+                    String content = item.get("description").asText();
 
                     NewsAPIResponseDto.NewsData newsData = NewsAPIResponseDto.NewsData.builder()
-                            .Description(item.get("description").asText())
+                            .Description(getParsedString(content))
                             .originalLink(item.get("originallink").asText())
                             .pubDate(item.get("pubDate").asText())
-                            .title(getParsedTitle(rawTitle))
+                            .title(getParsedString(rawTitle))
                             .build();
 
                     log.info("::newsData::\nDiscription : {}\nTitle : {}\nOriginalLink : {}\nPubDate : {}\n",
