@@ -11,5 +11,6 @@ public class ScrapRequestDto {
     @NoArgsConstructor
     public static class ScrapRequest {
         private String url;
+        private Long memberId;
     }
 }

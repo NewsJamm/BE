@@ -22,20 +22,20 @@ public class ScrapController {
     private final ScrapService scrapService;
 
     @PostMapping("/scrap")
-    public ApiResponse<ScrapResponseDto.ScrapResponse> scrap(@Valid @RequestBody ScrapRequestDto.ScrapRequest scrapRequestDto, Member member) {
+    public ApiResponse<ScrapResponseDto.ScrapResponse> scrap(@Valid @RequestBody ScrapRequestDto.ScrapRequest scrapRequestDto) {
         log.info("scrap request: {}", scrapRequestDto);
-        log.info("member: {}", member);
+        log.info("memberId: {}", scrapRequestDto.getMemberId());
 
-        ScrapResponseDto.ScrapResponse response = scrapService.scrap(scrapRequestDto, member.getId());
+        ScrapResponseDto.ScrapResponse response = scrapService.scrap(scrapRequestDto, scrapRequestDto.getMemberId());
         return ApiResponse.onSuccess(response);
     }
 
     @DeleteMapping("/scrapUndo")
-    public ApiResponse<ScrapUndoResponseDto.ScrapUndoResponse> scrapUndo(@Valid @RequestBody ScrapUndoRequestDto.ScrapUndoRequest undoRequestDto, Member member) {
+    public ApiResponse<ScrapUndoResponseDto.ScrapUndoResponse> scrapUndo(@Valid @RequestBody ScrapUndoRequestDto.ScrapUndoRequest undoRequestDto) {
         log.info("undo request: {}", undoRequestDto);
-        log.info("member: {}", member);
+        log.info("member: {}", undoRequestDto.getMemberId());
 
-        ScrapUndoResponseDto.ScrapUndoResponse response = scrapService.scrapUndo(undoRequestDto, member.getId());
+        ScrapUndoResponseDto.ScrapUndoResponse response = scrapService.scrapUndo(undoRequestDto);
         return ApiResponse.onSuccess(response);
     }
 }

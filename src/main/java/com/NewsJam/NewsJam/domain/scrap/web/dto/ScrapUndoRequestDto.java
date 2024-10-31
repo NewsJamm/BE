@@ -10,6 +10,7 @@ public class ScrapUndoRequestDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ScrapUndoRequest {
-        Long scrapId;
+        String url;
+        Long memberId;
     }
 }
