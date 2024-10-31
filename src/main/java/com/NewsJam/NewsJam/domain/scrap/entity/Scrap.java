@@ -16,6 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,7 +29,6 @@ public class Scrap {
 
     @Column(name = "news_url", nullable = false)
     private String newsUrl;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
