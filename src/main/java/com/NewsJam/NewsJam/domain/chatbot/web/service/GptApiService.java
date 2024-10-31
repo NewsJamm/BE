@@ -56,7 +56,7 @@ public class GptApiService implements ChatBotService {
                 return NewsCategory.연예;
 
             case "IT":
-                return NewsCategory.IT;
+                return NewsCategory.기술;
 
             case "건강":
                 return NewsCategory.건강;
@@ -76,7 +76,7 @@ public class GptApiService implements ChatBotService {
 
     private String generateNewsCategoryPrompt(String content) {
         return "다음의 뉴스 내용을 기반으로 해당하는 카테고리 분류를 알려줘. 카테고리는 주어진 카테고리 목록 내에서만 골라야 해. 카테고리 분류에 해당하는 단어만 답변해줘.\n\n<뉴스 내용>\n"
-                + content + "\n\n<카테고리 목록>\n정치\n사회\n경제\n스포츠\n연예\nIT\n건강\n교육\n기타";
+                + content + "\n\n<카테고리 목록>\n정치\n사회\n경제\n스포츠\n연예\n기술\n건강\n교육\n기타";
     }
 
 
