@@ -198,7 +198,6 @@ public class JwtService {
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
         Cookie cookie = new Cookie(refreshHeader, refreshToken);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
         response.addCookie(cookie);
     }
 
