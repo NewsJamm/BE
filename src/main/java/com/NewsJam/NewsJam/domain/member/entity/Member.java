@@ -39,7 +39,7 @@ public class Member {
     private String providerId;
 
     @Column(name = "scrap_list")
-    @OneToMany(mappedBy = "memberId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scrap> scrapList;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -54,7 +54,7 @@ public class Member {
 
     public void addScrap(Scrap scrap) {
         scrapList.add(scrap);
-        scrap.setMemberId(this);
+        scrap.changeMember(this);
     }
 
     public void addAuthority(Authority authority) {

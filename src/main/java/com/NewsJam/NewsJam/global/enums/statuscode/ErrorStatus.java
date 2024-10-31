@@ -15,7 +15,10 @@ public enum ErrorStatus implements BaseCode {
 
     // member
     _MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4002", "존재하지 않는 사용자입니다."),
-    _EXIST_LOGINID(HttpStatus.NOT_FOUND, "MEMBER4001", "이미 존재하는 사용자 아이디입니다.");
+    _EXIST_LOGINID(HttpStatus.NOT_FOUND, "MEMBER4001", "이미 존재하는 사용자 아이디입니다."),
+
+    // scrap
+    _SCRAP_NOT_EXIST(HttpStatus.NOT_FOUND, "SCRAP4001", "존재하지 않는 스크랩 정보입니다.");
 
 
     private final HttpStatus httpStatus;
