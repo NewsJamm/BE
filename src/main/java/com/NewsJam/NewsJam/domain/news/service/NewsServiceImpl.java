@@ -52,7 +52,7 @@ public class NewsServiceImpl implements NewsService {
                 .defaultHeader("X-Naver-Client-Secret", clientSecret)
                 .build();
 
-        for (int i = 0; i < keywords.getKeywords().size(); i++) {
+        for (int i = 0; i < keywords.getKeywords().size() / 2; i++) {
             String query = keywords.getKeywords().get(i);
 
             JsonNode response = client.get()
@@ -87,6 +87,7 @@ public class NewsServiceImpl implements NewsService {
                     responseDto.add(newsData);
                 }
             }
+
         }
 
         return responseDto;
