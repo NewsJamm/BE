@@ -1,7 +1,7 @@
 package com.NewsJam.NewsJam.global.config;
 
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
-import com.NewsJam.NewsJam.domain.member.resolver.LoginMemberArgumentResolver;
+import com.NewsJam.NewsJam.global.resolver.LoginMemberArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

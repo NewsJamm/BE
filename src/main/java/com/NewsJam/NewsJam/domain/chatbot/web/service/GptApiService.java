@@ -82,7 +82,6 @@ public class GptApiService implements ChatBotService {
 
     private Mono<String> generateResponse(String prompt) {
         String authKey = "Bearer " + GPT_API_KEY;
-        log.info("authkey = {}", authKey);
         return webClient.post()
                 .uri("/chat/completions")
                 .header("Authorization", authKey)
