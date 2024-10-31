@@ -59,9 +59,9 @@ public class NewsServiceImpl implements NewsService {
                     .uri(uriBuilder -> uriBuilder
                             .path("/v1/search/news.json")
                             .queryParam("query", query)
-                            .queryParam("display", 10)
+                            .queryParam("display", 5)
                             .queryParam("start", 1)
-                            .queryParam("sort", "sim")
+                            .queryParam("sort", "date")
                             .build())
                     .retrieve()
                     .bodyToMono(JsonNode.class)
