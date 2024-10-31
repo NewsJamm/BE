@@ -56,7 +56,7 @@ public class NewsServiceImpl implements NewsService {
             String query = keywords.getKeywords().get(i);
 
             JsonNode response = client.get()
-                    .uri(uriBuilder -> uriBuilder.path("/news")
+                    .uri(uriBuilder -> uriBuilder
                             .path("/v1/search/news.json")
                             .queryParam("query", query)
                             .queryParam("display", 10)
