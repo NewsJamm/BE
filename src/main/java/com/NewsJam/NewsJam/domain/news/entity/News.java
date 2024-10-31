@@ -1,6 +1,7 @@
 package com.NewsJam.NewsJam.domain.news.entity;
 
 import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
+import com.NewsJam.NewsJam.global.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "news")
-public class News {
+public class News extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
