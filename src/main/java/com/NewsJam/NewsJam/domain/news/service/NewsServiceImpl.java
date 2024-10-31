@@ -20,10 +20,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
 
-    @Value("naver.news.clientId")
+    @Value("${naver.news.clientId}")
     private static String clientId;
 
-    @Value("naver.news.clientSecret")
+    @Value("${naver.news.clientSecret}")
     private static String clientSecret;
 
     @Override
@@ -56,10 +56,10 @@ public class NewsServiceImpl implements NewsService {
             String query = keywords.getKeywords().get(i);
 
             JsonNode response = client.get()
-                    .uri(uriBuilder -> uriBuilder.path("/news")
+                    .uri(uriBuilder -> uriBuilder
                             .path("/v1/search/news.json")
                             .queryParam("query", query)
-                            .queryParam("display", 100)
+                            .queryParam("display", 10)
                             .queryParam("start", 1)
                             .queryParam("sort", "sim")
                             .build())
