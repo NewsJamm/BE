@@ -30,7 +30,7 @@ public class PyTrendsKeywordService implements TrendKeywordService {
                 .uri("/api/keyword")
                 .retrieve()
                 .bodyToMono(TrendKeywordResponseDTO.class)
-                .map(TrendKeywordResponseDTO::getTrendingKeywords)
+                .map(TrendKeywordResponseDTO::getTrending_keywords)
                 .block();
     }
 }
