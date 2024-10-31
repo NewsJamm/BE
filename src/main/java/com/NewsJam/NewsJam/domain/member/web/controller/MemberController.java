@@ -1,7 +1,7 @@
 package com.NewsJam.NewsJam.domain.member.web.controller;
 
 import com.NewsJam.NewsJam.domain.member.entity.Member;
-import com.NewsJam.NewsJam.domain.member.service.MemberService;
+import com.NewsJam.NewsJam.domain.member.service.MemberCommandService;
 import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
 import com.NewsJam.NewsJam.global.response.ApiResponse;
@@ -16,19 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequiredArgsConstructor
 public class MemberController {
-    private final MemberService memberService;
+    private final MemberCommandService memberCommandService;
 
-    @PostMapping("/signIn")
+    @PostMapping("/api/signin")
     public ApiResponse<?> signIn(@Valid @RequestBody MemberRequestDto.Request request) {
-        Member newMember = memberService.join(request);
+        Member newMember = memberCommandService.join(request);
 
         return ApiResponse.onSuccess(newMember);
     }
 
-    @PostMapping("/interestingKeywords")
+    @PostMapping("/api/interesting-keywords")
     public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.Request request) {
-        memberService.updateKeywords(request);
+        memberCommandService.updateKeywords(request);
 
         return ApiResponse.onSuccess("키워드 저장에 성공하였습니다.");
     }
+
+
 }
