@@ -12,7 +12,6 @@ import com.NewsJam.NewsJam.global.security.jwt.handler.JwtLoginSuccessHandler;
 import com.NewsJam.NewsJam.global.security.jwt.handler.OAuthLoginFailureHandler;
 import com.NewsJam.NewsJam.global.security.jwt.handler.OAuthLoginSuccessHandler;
 import com.NewsJam.NewsJam.global.security.jwt.service.JwtService;
-import com.NewsJam.NewsJam.global.security.service.LocalLoginUserDetailService;
 import com.NewsJam.NewsJam.global.security.service.LoginUserDetailsService;
 import com.NewsJam.NewsJam.global.service.SocialLoginService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,7 +36,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final LocalLoginUserDetailService localLoginUserDetailService;
     private final MemberRepository memberRepository;
     private final LoginUserDetailsService loginUserDetailsService;
     private final JwtService jwtService;
