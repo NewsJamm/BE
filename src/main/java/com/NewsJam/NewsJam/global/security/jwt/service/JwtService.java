@@ -2,6 +2,7 @@ package com.NewsJam.NewsJam.global.security.jwt.service;
 
 import com.NewsJam.NewsJam.domain.member.enums.AuthProvider;
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
+import jakarta.servlet.http.Cookie;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Optional;
@@ -192,10 +193,13 @@ public class JwtService {
     }
 
     /**
-     * RefreshToken 헤더 설정
+     * RefreshToken 쿠키 설정
      */
     public void setRefreshTokenHeader(HttpServletResponse response, String refreshToken) {
-        response.setHeader(refreshHeader, refreshToken);
+        Cookie cookie = new Cookie(refreshHeader, refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        response.addCookie(cookie);
     }
 
     /**
