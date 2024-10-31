@@ -17,17 +17,16 @@ import reactor.netty.http.client.HttpClient;
 @RequiredArgsConstructor
 public class PyTrendsKeywordService implements TrendKeywordService {
     @Value("${ai.server.base_url}")
-    private static String BASE_URL;
-    private static WebClient webClient = WebClient.builder()
+    private String BASE_URL;
+    private WebClient webClient = WebClient.builder()
             .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .baseUrl(BASE_URL)
             .clientConnector(new ReactorClientHttpConnector(HttpClient.create()))
             .build();
 
     @Override
     public List<String> getTrendKeyword() {
         return webClient.get()
-                .uri("/api/keyword")
+                .uri(BASE_URL + "/api/keyword")
                 .retrieve()
                 .bodyToMono(TrendKeywordResponseDTO.class)
                 .map(TrendKeywordResponseDTO::getTrending_keywords)
