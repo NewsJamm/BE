@@ -20,11 +20,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
 
-    @Value("naver.news.clientId")
-    private static String clientId;
+    @Value("${naver.news.clientId}")
+    private String clientId;
 
-    @Value("naver.news.clientSecret")
-    private static String clientSecret;
+    @Value("${naver.news.clientSecret}")
+    private String clientSecret;
 
     @Override
     public String getDate() {
@@ -59,7 +59,7 @@ public class NewsServiceImpl implements NewsService {
                     .uri(uriBuilder -> uriBuilder.path("/news")
                             .path("/v1/search/news.json")
                             .queryParam("query", query)
-                            .queryParam("display", 100)
+                            .queryParam("display", 10)
                             .queryParam("start", 1)
                             .queryParam("sort", "sim")
                             .build())
