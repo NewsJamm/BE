@@ -59,7 +59,7 @@ public class ScrapServiceImpl implements ScrapService {
             log.info("::Member Not Exist !!!::");
             throw new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST);
         }
-        Optional<Scrap> undoScrap = scrapRepository.findById(scrapUndoRequestDto.getScrapId());
+        Optional<Scrap> undoScrap = scrapRepository.findByNewsUrl(scrapUndoRequestDto.getUrl());
         if(undoScrap.isEmpty()){
             log.info("::Scrap Not Exist !!!::");
             throw new ScrapNotExistException(ErrorStatus._SCRAP_NOT_EXIST);
@@ -75,7 +75,7 @@ public class ScrapServiceImpl implements ScrapService {
 
         ScrapUndoResponseDto.ScrapUndoResponse response = ScrapUndoResponseDto.ScrapUndoResponse.builder()
                 .memberId(scrapUndoMember.getId())
-                .scrapId(scrapUndoRequestDto.getScrapId())
+                .url(scrapUndoRequestDto.getUrl())
                 .build();
 
         return response;
