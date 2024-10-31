@@ -15,11 +15,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService {
+@Transactional
+public class MemberCommandServiceImpl implements MemberCommandService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder pwEncoder;
 
