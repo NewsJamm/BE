@@ -11,5 +11,6 @@ public class ScrapUndoRequestDto {
     @AllArgsConstructor
     public static class ScrapUndoRequest {
         Long scrapId;
+        Long memberId;
     }
 }
