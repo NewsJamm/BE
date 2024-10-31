@@ -4,6 +4,7 @@ import com.NewsJam.NewsJam.domain.member.entity.Authority;
 import com.NewsJam.NewsJam.domain.member.entity.Member;
 import com.NewsJam.NewsJam.domain.member.enums.AuthProvider;
 import com.NewsJam.NewsJam.domain.member.enums.Authorities;
+import com.NewsJam.NewsJam.domain.member.repository.AuthorityRepository;
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
 import com.NewsJam.NewsJam.global.security.userinfo.OAuth2UserInfo;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginUserDetailsService implements CustomUserDetailsService {
     private final MemberRepository memberRepository;
+    private final AuthorityRepository authorityRepository;
 
     @Override
     public UserDetails loadUserByOAuth2UserInfo(OAuth2UserInfo userInfo, AuthProvider authProvider) {
@@ -49,9 +51,8 @@ public class LoginUserDetailsService implements CustomUserDetailsService {
             result = memberOptional.get();
         }
 
-        List<SimpleGrantedAuthority> authorityList = result.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getType().toString()))
-                .collect(Collectors.toList());
+        List<SimpleGrantedAuthority> authorityList = authorityRepository.findByMemberId(result.getId()).stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getType().toString())).collect(Collectors.toList());
 
         return new CustomUserDetails(result, authorityList);
     }
