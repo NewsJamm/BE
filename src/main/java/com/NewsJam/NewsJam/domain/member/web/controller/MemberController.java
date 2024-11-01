@@ -36,8 +36,8 @@ public class MemberController {
                     content = @Content)
     })
     @PostMapping("/api/signin")
-    public ApiResponse<?> signIn(@Valid @RequestBody MemberRequestDto.Request request) {
-        Member newMember = memberCommandService.join(request);
+    public ApiResponse<?> signIn(@Valid @RequestBody MemberRequestDto.MemberRequest memberRequest) {
+        Member newMember = memberCommandService.join(memberRequest);
 
         return ApiResponse.onSuccess(newMember);
     }
@@ -52,8 +52,8 @@ public class MemberController {
                     content = @Content)
     })
     @PostMapping("/api/interesting-keywords")
-    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.Request request, @LoginMember Member member) {
-        memberCommandService.updateKeywords(request, member.getId());
+    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.InterestingKeywordRequest interestingKeywordRequest, @LoginMember Member member) {
+        memberCommandService.updateKeywords(interestingKeywordRequest, member.getId());
 
         return ApiResponse.onSuccess("키워드 저장에 성공하였습니다.");
     }
