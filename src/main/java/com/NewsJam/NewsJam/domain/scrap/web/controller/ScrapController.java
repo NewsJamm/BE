@@ -6,6 +6,7 @@ import com.NewsJam.NewsJam.domain.scrap.web.dto.ScrapRequestDto;
 import com.NewsJam.NewsJam.domain.scrap.web.dto.ScrapResponseDto;
 import com.NewsJam.NewsJam.domain.scrap.web.dto.ScrapUndoRequestDto;
 import com.NewsJam.NewsJam.domain.scrap.web.dto.ScrapUndoResponseDto;
+import com.NewsJam.NewsJam.global.annotation.LoginMember;
 import com.NewsJam.NewsJam.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +23,20 @@ public class ScrapController {
     private final ScrapService scrapService;
 
     @PostMapping("/scrap")
-    public ApiResponse<ScrapResponseDto.ScrapResponse> scrap(@Valid @RequestBody ScrapRequestDto.ScrapRequest scrapRequestDto) {
+    public ApiResponse<ScrapResponseDto.ScrapResponse> scrap(@Valid @RequestBody ScrapRequestDto.ScrapRequest scrapRequestDto, @LoginMember Member member) {
         log.info("scrap request: {}", scrapRequestDto);
-        log.info("memberId: {}", scrapRequestDto.getMemberId());
+        log.info("memberId: {}", member.getId());
 
-        ScrapResponseDto.ScrapResponse response = scrapService.scrap(scrapRequestDto, scrapRequestDto.getMemberId());
+        ScrapResponseDto.ScrapResponse response = scrapService.scrap(scrapRequestDto, member.getId());
         return ApiResponse.onSuccess(response);
     }
 
     @DeleteMapping("/scrapUndo")
-    public ApiResponse<ScrapUndoResponseDto.ScrapUndoResponse> scrapUndo(@Valid @RequestBody ScrapUndoRequestDto.ScrapUndoRequest undoRequestDto) {
+    public ApiResponse<ScrapUndoResponseDto.ScrapUndoResponse> scrapUndo(@Valid @RequestBody ScrapUndoRequestDto.ScrapUndoRequest undoRequestDto, @LoginMember Member member) {
         log.info("undo request: {}", undoRequestDto);
-        log.info("member: {}", undoRequestDto.getMemberId());
+        log.info("member: {}", member.getId());
 
-        ScrapUndoResponseDto.ScrapUndoResponse response = scrapService.scrapUndo(undoRequestDto);
+        ScrapUndoResponseDto.ScrapUndoResponse response = scrapService.scrapUndo(undoRequestDto, member.getId());
         return ApiResponse.onSuccess(response);
     }
 }
