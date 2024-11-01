@@ -13,8 +13,6 @@ public class InterestingKeywordsRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request{
-        @Schema(description = "사용자의 유저 고유값 (로그인 아이디와는 별개)", example="1")
-        Long userId;
         @Schema(description = "사용자의 관심 키워드 리스트", example="interestingKeywords=[\"연예\", \"스포츠\", \"의료\"]")
         List<String> interestingKeywords;
     }
