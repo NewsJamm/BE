@@ -132,6 +132,7 @@ public class NewsSchedulerService {
                 .newsCategory(newsCategory)
                 .pubDate(newsData.getPubDate())
                 .vectorIdx(vectorizeResponseDTO.getVectorIdx())
+                .viewCnt(0L)
                 .keywordList(new ArrayList<>())
                 .build();
 
