@@ -5,6 +5,7 @@ import com.NewsJam.NewsJam.domain.member.service.MemberCommandService;
 import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberDeleteRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
+import com.NewsJam.NewsJam.domain.member.web.dto.MemberResponseDTO;
 import com.NewsJam.NewsJam.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,7 +30,7 @@ public class MemberController {
     @Operation(summary = "회원가입", description = "회원가입")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "회원 가입 성공",
-                    content = @Content(schema = @Schema(implementation = Member.class))),
+                    content = @Content(schema = @Schema(implementation = MemberResponseDTO.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청",
                     content = @Content),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류",
@@ -39,7 +40,10 @@ public class MemberController {
     public ApiResponse<?> signIn(@Valid @RequestBody MemberRequestDto.Request request) {
         Member newMember = memberCommandService.join(request);
 
-        return ApiResponse.onSuccess(newMember);
+        MemberResponseDTO result = MemberResponseDTO.builder()
+                .memberId(newMember.getId()).build();
+
+        return ApiResponse.onSuccess(result);
     }
 
     @Operation(summary = "관심 키워드 업데이트", description = "해당 회원의 관심 키워드 업데이트")
@@ -69,7 +73,7 @@ public class MemberController {
     })
     @DeleteMapping("/api/memberDelete")
     public ApiResponse<?> userDelete(@Valid @RequestBody MemberDeleteRequestDto.MemberDeleteRequest request) {
-        log.info("request memberId = {}",request.getMemberId());
+        log.info("request memberId = {}", request.getMemberId());
 
         memberCommandService.memberDelete(request);
 

@@ -2,14 +2,23 @@ package com.NewsJam.NewsJam.domain.member.entity;
 
 import com.NewsJam.NewsJam.domain.member.enums.AuthProvider;
 import com.NewsJam.NewsJam.domain.scrap.entity.Scrap;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Builder
@@ -28,7 +37,7 @@ public class Member {
     @Column(name = "login_pw")
     private String loginPw;
 
-    @Column(name = "member_name", nullable = false)
+    @Column(name = "member_name")
     private String memberName;
 
     @Column(name = "auth_provider")
@@ -75,7 +84,7 @@ public class Member {
         return authorities.get(0);
     }
 
-    public void changeRefreshToken(String refreshToken){
+    public void changeRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
 
