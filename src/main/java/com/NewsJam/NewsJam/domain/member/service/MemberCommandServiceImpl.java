@@ -42,6 +42,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .interestingKeywords(new ArrayList<>())
                 .authorities(new ArrayList<>())
                 .build();
+
         member.addAuthority(Authority.builder().type(Authorities.ROLE_MEMBER).build());
         return memberRepository.save(member);
     }
