@@ -31,7 +31,7 @@ public class LoginUserDetailsService implements CustomUserDetailsService {
         Optional<Member> memberOptional = memberRepository.findByAuthProviderAndProviderId(
                 authProvider, userInfo.getId());
 
-        if(!memberOptional.isPresent()){
+        if (!memberOptional.isPresent()) {
             Member member = Member.builder()
                     .memberName(userInfo.getNickname())
                     .authProvider(authProvider)
@@ -42,17 +42,17 @@ public class LoginUserDetailsService implements CustomUserDetailsService {
             Authority authority = Authority.builder()
                     .type(Authorities.ROLE_MEMBER)
                     .build();
-            
+
             member.addAuthority(authority);
-            
+
             result = memberRepository.save(member);
-        }
-        else {
+        } else {
             result = memberOptional.get();
         }
 
         List<SimpleGrantedAuthority> authorityList = authorityRepository.findByMemberId(result.getId()).stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getType().toString())).collect(Collectors.toList());
+                .map(authority -> new SimpleGrantedAuthority(authority.getType().toString()))
+                .collect(Collectors.toList());
 
         return new CustomUserDetails(result, authorityList);
     }
@@ -62,7 +62,7 @@ public class LoginUserDetailsService implements CustomUserDetailsService {
         Member member = memberRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new UsernameNotFoundException("해당 아이디가 존재하지 않습니다."));
 
-        List<SimpleGrantedAuthority> authorityList = member.getAuthorities().stream()
+        List<SimpleGrantedAuthority> authorityList = authorityRepository.findByMemberId(member.getId()).stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getType().toString()))
                 .collect(Collectors.toList());
 
