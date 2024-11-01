@@ -3,12 +3,11 @@ package com.NewsJam.NewsJam.domain.member.service;
 import com.NewsJam.NewsJam.domain.member.entity.Authority;
 import com.NewsJam.NewsJam.domain.member.entity.Member;
 import com.NewsJam.NewsJam.domain.member.enums.Authorities;
-import com.NewsJam.NewsJam.domain.member.exception.ExistLoginIdException;
 import com.NewsJam.NewsJam.domain.member.exception.UserNotExistException;
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
 import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
-import com.NewsJam.NewsJam.domain.member.web.dto.MemberDeleteRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
+import com.NewsJam.NewsJam.global.annotation.LoginMember;
 import com.NewsJam.NewsJam.global.enums.statuscode.ErrorStatus;
 import com.NewsJam.NewsJam.global.exception.GeneralException;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +50,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public void updateKeywords(InterestingKeywordsRequestDto.Request request) {
-        Member member = memberRepository.findById(request.getUserId())
+    public void updateKeywords(InterestingKeywordsRequestDto.Request request, Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST));
 
         member.addInterestingKeywords(request.getInterestingKeywords());
@@ -60,15 +59,15 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public void memberDelete(MemberDeleteRequestDto.MemberDeleteRequest request) {
-        Optional<Member> findMember = memberRepository.findById(request.getMemberId());
+    public void memberDelete(Long memberId) {
+        Optional<Member> findMember = memberRepository.findById(memberId);
 
         if(findMember.isEmpty()){
             log.info("Member not found");
             throw new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST);
         }
-        Member member = findMember.get();
-        memberRepository.delete(member);
+        Member found = findMember.get();
+        memberRepository.delete(found);
     }
 
 }
