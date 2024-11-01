@@ -4,6 +4,7 @@ import com.NewsJam.NewsJam.domain.member.entity.Member;
 import com.NewsJam.NewsJam.domain.member.service.MemberCommandService;
 import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
+import com.NewsJam.NewsJam.global.annotation.LoginMember;
 import com.NewsJam.NewsJam.global.response.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +27,8 @@ public class MemberController {
     }
 
     @PostMapping("/api/interesting-keywords")
-    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.Request request) {
-        memberCommandService.updateKeywords(request);
+    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.Request request, @LoginMember Member member) {
+        memberCommandService.updateKeywords(request, member);
 
         return ApiResponse.onSuccess("키워드 저장에 성공하였습니다.");
     }
