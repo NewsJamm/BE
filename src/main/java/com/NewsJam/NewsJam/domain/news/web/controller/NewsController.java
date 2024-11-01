@@ -84,7 +84,7 @@ public class NewsController {
     @GetMapping("hot-topic/keyword")
     public ApiResponse<NewsResponseDTO.HotTopicNewsPage> getHotTopicKeywordNews(
             @Valid @RequestParam(name = "keyword") @NotNull(message = "단어를 입력해주세요.") @Schema(description = "키워드", example = "호날두") String keyword,
-            @Pageable @RequestParam(name = "page") @Schema(description = "paging 에서 불러올 page 번호", example = "2") Integer page,
+            @Pageable @RequestParam(name = "page") @Schema(description = "paging 에서 불러올 page 번호 (최소 1)", example = "2") Integer page,
             @Pageable @RequestParam(name = "pageSize") @Schema(description = "한 page 에서의 데이터 개수", example = "5") Integer pageSize) {
 
         Page<News> hotTopicKeywordNewsPage = newsQueryService.getHotTopicKeywordNewsPage(keyword, SortStatus.LATEST,
@@ -113,8 +113,8 @@ public class NewsController {
     public ApiResponse<NewsResponseDTO.CategoryNewsPage> getNewsPageWithCategory(
             @Valid @RequestParam(name = "category") @NotNull(message = "적절하지 않은 카테고리 입니다.") NewsCategory category,
             @Valid @RequestParam(name = "sortStatus") @NotNull(message = "적절하지 않은 정렬 기준입니다.") SortStatus sortStatus,
-            @Pageable @RequestParam(name = "page") Integer page,
-            @Pageable @RequestParam(name = "pageSize") Integer pageSize) {
+            @Pageable @RequestParam(name = "page") @Schema(description = "paging 에서 불러올 page 번호 (최소 1)", example = "1") Integer page,
+            @Pageable @RequestParam(name = "pageSize") @Schema(description = "한 page 에서의 데이터 개수", example = "3") Integer pageSize) {
         Page<News> categoryNewsPage = newsQueryService.getCategoryNewsPage(category, page, pageSize, sortStatus);
 
         CategoryNewsPage result = NewsConvertor.toCategoryNewsPage(categoryNewsPage, category);
