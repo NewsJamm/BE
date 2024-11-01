@@ -53,8 +53,8 @@ public class ScrapServiceImpl implements ScrapService {
     }
 
     @Override
-    public ScrapUndoResponseDto.ScrapUndoResponse scrapUndo(ScrapUndoRequestDto.ScrapUndoRequest scrapUndoRequestDto) {
-        Optional<Member> member = memberRepository.findById(scrapUndoRequestDto.getMemberId());
+    public ScrapUndoResponseDto.ScrapUndoResponse scrapUndo(ScrapUndoRequestDto.ScrapUndoRequest scrapUndoRequestDto, Long memberId) {
+        Optional<Member> member = memberRepository.findById(memberId);
         if(member.isEmpty()){
             log.info("::Member Not Exist !!!::");
             throw new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST);

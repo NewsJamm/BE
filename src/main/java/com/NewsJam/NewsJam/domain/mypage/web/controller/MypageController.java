@@ -1,8 +1,9 @@
 package com.NewsJam.NewsJam.domain.mypage.web.controller;
 
+import com.NewsJam.NewsJam.domain.member.entity.Member;
 import com.NewsJam.NewsJam.domain.mypage.service.MypageService;
 import com.NewsJam.NewsJam.domain.mypage.web.dto.ScrapNewsListResponseDto;
-import com.NewsJam.NewsJam.domain.mypage.web.dto.ViewScrapListRequestDto;
+import com.NewsJam.NewsJam.global.annotation.LoginMember;
 import com.NewsJam.NewsJam.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,14 +36,14 @@ public class MypageController {
     })
     @GetMapping("/getScrapList")
     public ApiResponse<ScrapNewsListResponseDto.ScrapNewsList> getScrapList(
-            @Valid @RequestBody
+
             @Parameter(description = "스크랩 뉴스 리스트 조회 요청 정보", required = true)
-            ViewScrapListRequestDto.ViewScrapDto request) {
+            @LoginMember Member member) {
 
         log.info(":: MypageController Called ::");
-        log.info("memberId: {}", request.getMemberId());
+        log.info("memberId: {}", member.getId());
 
-        ScrapNewsListResponseDto.ScrapNewsList response = mypageService.scrapNewsList(request.getMemberId());
+        ScrapNewsListResponseDto.ScrapNewsList response = mypageService.scrapNewsList(member.getId());
         return ApiResponse.onSuccess(response);
     }
 }
