@@ -3,8 +3,8 @@ package com.NewsJam.NewsJam.domain.member.web.controller;
 import com.NewsJam.NewsJam.domain.member.entity.Member;
 import com.NewsJam.NewsJam.domain.member.service.MemberCommandService;
 import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
-import com.NewsJam.NewsJam.domain.member.web.dto.MemberDeleteRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
+import com.NewsJam.NewsJam.global.annotation.LoginMember;
 import com.NewsJam.NewsJam.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,8 +52,8 @@ public class MemberController {
                     content = @Content)
     })
     @PostMapping("/api/interesting-keywords")
-    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.Request request) {
-        memberCommandService.updateKeywords(request);
+    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.Request request, @LoginMember Member member) {
+        memberCommandService.updateKeywords(request, member.getId());
 
         return ApiResponse.onSuccess("키워드 저장에 성공하였습니다.");
     }
@@ -68,10 +68,10 @@ public class MemberController {
                     content = @Content)
     })
     @DeleteMapping("/api/memberDelete")
-    public ApiResponse<?> userDelete(@Valid @RequestBody MemberDeleteRequestDto.MemberDeleteRequest request) {
-        log.info("request memberId = {}",request.getMemberId());
+    public ApiResponse<?> userDelete(@LoginMember Member member) {
+        log.info("request memberId = {}",member.getId());
 
-        memberCommandService.memberDelete(request);
+        memberCommandService.memberDelete(member.getId());
 
         return ApiResponse.onSuccess("회원 탈퇴에 성공하였습니다.");
     }
