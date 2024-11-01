@@ -11,6 +11,5 @@ public class ScrapUndoRequestDto {
     @AllArgsConstructor
     public static class ScrapUndoRequest {
         String url;
-        Long memberId;
     }
 }
