@@ -12,7 +12,6 @@ public class InterestingKeywordsRequestDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Request{
-        Long userId;
         List<String> interestingKeywords;
     }
 }
