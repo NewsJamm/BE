@@ -1,7 +1,21 @@
 package com.NewsJam.NewsJam.domain.news.entity;
 
 import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
+
 import jakarta.persistence.*;
+
+import com.NewsJam.NewsJam.global.entity.BaseEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +29,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "news")
-public class News {
+public class News extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

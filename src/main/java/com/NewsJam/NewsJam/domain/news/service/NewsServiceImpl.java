@@ -20,11 +20,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class NewsServiceImpl implements NewsService {
     private final NewsRepository newsRepository;
 
-    @Value("naver.news.clientId")
-    private static String clientId;
+    @Value("${naver.news.clientId}")
+    private String clientId;
 
-    @Value("naver.news.clientSecret")
-    private static String clientSecret;
+    @Value("${naver.news.clientSecret}")
+    private String clientSecret;
 
     @Override
     public String getDate() {
@@ -35,9 +35,9 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public String getParsedTitle(String rawTitle) {
+    public String getParsedString(String rawTitle) {
         String result = rawTitle.replaceAll("<b>|</b>", "");
-
+        result = result.replaceAll("&quot;", "\"");
         log.info("::parsed String : {}::", result);
         return result;
     }
@@ -52,16 +52,16 @@ public class NewsServiceImpl implements NewsService {
                 .defaultHeader("X-Naver-Client-Secret", clientSecret)
                 .build();
 
-        for (int i = 0; i < keywords.getKeywords().size(); i++) {
+        for (int i = 0; i < keywords.getKeywords().size() / 2; i++) {
             String query = keywords.getKeywords().get(i);
 
             JsonNode response = client.get()
-                    .uri(uriBuilder -> uriBuilder.path("/news")
+                    .uri(uriBuilder -> uriBuilder
                             .path("/v1/search/news.json")
                             .queryParam("query", query)
-                            .queryParam("display", 100)
+                            .queryParam("display", 5)
                             .queryParam("start", 1)
-                            .queryParam("sort", "sim")
+                            .queryParam("sort", "date")
                             .build())
                     .retrieve()
                     .bodyToMono(JsonNode.class)
@@ -71,12 +71,13 @@ public class NewsServiceImpl implements NewsService {
             if (response != null && response.has("items")) {
                 for (JsonNode item : response.get("items")) {
                     String rawTitle = item.get("title").asText();
+                    String content = item.get("description").asText();
 
                     NewsAPIResponseDto.NewsData newsData = NewsAPIResponseDto.NewsData.builder()
-                            .Description(item.get("description").asText())
+                            .Description(getParsedString(content))
                             .originalLink(item.get("originallink").asText())
                             .pubDate(item.get("pubDate").asText())
-                            .title(getParsedTitle(rawTitle))
+                            .title(getParsedString(rawTitle))
                             .build();
 
                     log.info("::newsData::\nDiscription : {}\nTitle : {}\nOriginalLink : {}\nPubDate : {}\n",
@@ -86,6 +87,7 @@ public class NewsServiceImpl implements NewsService {
                     responseDto.add(newsData);
                 }
             }
+
         }
 
         return responseDto;

@@ -12,7 +12,7 @@ public class ScrapUndoResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class ScrapUndoResponse{
-        Long scrapId;
+        String url;
         Long memberId;
     }
 }

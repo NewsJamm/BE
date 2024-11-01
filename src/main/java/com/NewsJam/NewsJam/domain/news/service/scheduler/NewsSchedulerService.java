@@ -1,6 +1,7 @@
 package com.NewsJam.NewsJam.domain.news.service.scheduler;
 
 import com.NewsJam.NewsJam.domain.chatbot.web.service.ChatBotService;
+import com.NewsJam.NewsJam.domain.news.converter.NewsConvertor;
 import com.NewsJam.NewsJam.domain.news.entity.Keyword;
 import com.NewsJam.NewsJam.domain.news.entity.News;
 import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
@@ -13,10 +14,15 @@ import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorResponseDTO.Extract
 import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorResponseDTO.VectorizeResponseDTO;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIRequestDto.Keywords;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsAPIResponseDto.NewsData;
+import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -32,27 +38,45 @@ public class NewsSchedulerService {
     private final NewsRepository newsRepository;
     private final ChatBotService chatBotService;
 
-    private static Queue<Long> newsIdQueue = new ConcurrentLinkedQueue<>();
+    private static Queue<Long> newsIdQueue = new LinkedList<>();
+    private static List<Word> wordList = new ArrayList<>();
+    private static Map<String, Word> wordAddressMap = new HashMap<>();
 
-//    @Scheduled(fixedDelay = 180000)
+    @Scheduled(fixedDelay = 300000)
     public void scheduled() {
         log.info(":::: 뉴스 스케줄러 실행 ::::");
 
-        List<String> keywords = trendKeywordService.getTrendKeyword();
+        try {
+            List<String> keywords = trendKeywordService.getTrendKeyword();
 
-        Keywords keywordDTO = new Keywords(keywords);
+            Keywords keywordDTO = new Keywords(keywords);
 
-        List<NewsData> news = newsService.getNews(keywordDTO);
+            List<NewsData> news = newsService.getNews(keywordDTO);
 
-        saveNews(news);
+            saveNews(news);
+        } catch (Exception e) {
+            log.error("오류 발생", e);
+        }
 
         // TODO 큐 시간 검증 구현
+
+        Collections.sort(wordList);
 
         log.info(":::: 뉴스 스케줄러 종료 ::::");
     }
 
+    public List<NewsResponseDTO.HotTopicWord> getHotTopicWords(int wordCount) {
+        List<NewsResponseDTO.HotTopicWord> words = new ArrayList<>();
+        int len = Math.min(wordCount, wordList.size());
+        for (int i = 0; i < len; i++) {
+            Word word = wordList.get(i);
+            words.add(NewsConvertor.toHotTopicWord(word.getKeyword(), word.getNewsCount()));
+        }
+
+        return words;
+    }
+
     private void saveNews(List<NewsData> news) {
-        // TODO 카테고리 별 분류
         for (NewsData newsData : news) {
             String originalLink = newsData.getOriginalLink();
 
@@ -61,22 +85,39 @@ public class NewsSchedulerService {
                 continue;
             }
 
-            VectorizeResponseDTO vectorizeResponseDTO = vectorizeNews(newsData);
+            NewsCategory category = chatBotService.getNewsCategory(newsData.getTitle());
 
-            NewsCategory newsCategory = chatBotService.getNewsCategory(newsData.getDescription());
+            VectorizeResponseDTO vectorizeResponseDTO = vectorizeNews(newsData, category);
 
-            News saved = saveNewsEntity(newsData, vectorizeResponseDTO, newsCategory);
+            News saved = saveNewsEntity(newsData, vectorizeResponseDTO, category);
 
             newsIdQueue.offer(saved.getId());
+
+            for (ExtractKeywordResponseDTO keywordResponseDTO : vectorizeResponseDTO.getKeywordResponseList()) {
+                String keyword = keywordResponseDTO.getWord();
+                addKeyword(keyword);
+            }
+        }
+
+    }
+
+    private void addKeyword(String keyword) {
+        if (wordAddressMap.containsKey(keyword)) {
+            Word word = wordAddressMap.get(keyword);
+            word.increaseCount();
+        } else {
+            Word word = new Word(keyword);
+            wordAddressMap.put(keyword, word);
+            wordList.add(word);
         }
     }
 
 
-    private VectorizeResponseDTO vectorizeNews(NewsData newsData) {
+    private VectorizeResponseDTO vectorizeNews(NewsData newsData, NewsCategory category) {
         VectorizeRequestDTO request = VectorizeRequestDTO.builder()
                 .news_content(newsData.getDescription())
                 .news_title(newsData.getTitle())
-                .category(NewsCategory.경제)
+                .category(category)
                 .build();
 
         return newsVectorService.vectorizeNewsVector(request);
@@ -103,5 +144,30 @@ public class NewsSchedulerService {
             newsCreate.addKeyword(keyword);
         }
         return newsRepository.save(newsCreate);
+    }
+}
+
+
+@Data
+class Word implements Comparable<Word> {
+    private String keyword;
+    private int newsCount;
+
+    public Word(String keyword) {
+        this.keyword = keyword;
+        this.newsCount = 1;
+    }
+
+    @Override
+    public int compareTo(Word o) {
+        return o.newsCount - this.newsCount;
+    }
+
+    public void increaseCount() {
+        newsCount++;
+    }
+
+    public void decreaseCount() {
+        newsCount--;
     }
 }

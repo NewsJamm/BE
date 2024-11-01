@@ -66,6 +66,6 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/toast:latest
             sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run -d -e TZ=Asia/Seoul --log-driver=syslog -p 8080:8080 -e SPRING_PROFILES_ACTIVE= ${{ secrets.DOCKER_USERNAME }}/toast:latest
+            sudo docker run -d -e TZ=Asia/Seoul --log-driver=syslog --network host -p 8080:8080 -e SPRING_PROFILES_ACTIVE= ${{ secrets.DOCKER_USERNAME }}/toast:latest
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
             sudo docker image prune -a -f

@@ -38,10 +38,12 @@ public class MypageServiceImpl implements MypageService {
         List<ScrapNewsListResponseDto.newsList> newList =  new ArrayList<>();
         for(Scrap scrap : scrapList) {
             Optional<News> news = newsRepository.findByOriginalLink(scrap.getNewsUrl());
+
             if(news.isEmpty()) {
-                log.info("::Scrap Not Exist::");
+                log.info("::News Not Exist::");
                 throw new NewsNotExistException(ErrorStatus._NEWS_NOT_EXIST);
             }
+
             News getNews = news.get();
             ScrapNewsListResponseDto.newsList newNews = ScrapNewsListResponseDto.newsList.builder()
                     .title(getNews.getNewsTitle())

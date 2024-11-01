@@ -8,6 +8,8 @@ public enum ErrorStatus implements BaseCode {
     _BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못된 요청입니다."),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
+    _PAGE_VARIABLE_INVALID(HttpStatus.BAD_REQUEST, "PAGE4001", "요청한 페이지 혹은 페이지당 요소 개수는 0보다 커야합니다."),
+    _INVALID_SORT_STATUS(HttpStatus.BAD_REQUEST, "PAGE4002", "정렬 기준이 올바르지 않습니다."),
 
 
     // news
