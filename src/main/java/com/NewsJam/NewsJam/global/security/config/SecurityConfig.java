@@ -4,9 +4,9 @@ import com.NewsJam.NewsJam.domain.member.repository.AuthorityRepository;
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
 import com.NewsJam.NewsJam.domain.member.service.MemberQueryService;
 import com.NewsJam.NewsJam.global.security.jwt.authentication.SocialAuthenticationProvider;
-import com.NewsJam.NewsJam.global.security.jwt.filter.SocialLoginAuthenticationFilter;
-import com.NewsJam.NewsJam.global.security.jwt.filter.LocalLoginAuthenticationFilter;
 import com.NewsJam.NewsJam.global.security.jwt.filter.JwtAuthenticationFilter;
+import com.NewsJam.NewsJam.global.security.jwt.filter.LocalLoginAuthenticationFilter;
+import com.NewsJam.NewsJam.global.security.jwt.filter.SocialLoginAuthenticationFilter;
 import com.NewsJam.NewsJam.global.security.jwt.handler.JwtLoginFailureHandler;
 import com.NewsJam.NewsJam.global.security.jwt.handler.JwtLoginSuccessHandler;
 import com.NewsJam.NewsJam.global.security.jwt.handler.OAuthLoginFailureHandler;
@@ -24,9 +24,9 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
@@ -50,11 +50,11 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -96,7 +96,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    SocialLoginAuthenticationFilter socialLoginAuthenticationFilter(){
+    SocialLoginAuthenticationFilter socialLoginAuthenticationFilter() {
         SocialLoginAuthenticationFilter socialLoginAuthenticationFilter
                 = new SocialLoginAuthenticationFilter(objectMapper);
         socialLoginAuthenticationFilter.setAuthenticationManager(authenticationManager());
