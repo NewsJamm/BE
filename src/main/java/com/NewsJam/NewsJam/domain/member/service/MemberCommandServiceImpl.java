@@ -9,14 +9,12 @@ import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
 import com.NewsJam.NewsJam.global.enums.statuscode.ErrorStatus;
 import com.NewsJam.NewsJam.global.exception.GeneralException;
+import java.util.ArrayList;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -31,9 +29,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public Member join(MemberRequestDto.MemberRequest memberRequest) {
         log.info("Member request: {}", memberRequest);
         if(memberRepository.findAllByLoginId(memberRequest.getLoginId()).isEmpty()){
+
             log.info("Member already exists");
-            throw new GeneralException(ErrorStatus._MEMBER_NOT_EXIST);
+            throw new GeneralException(ErrorStatus._EXIST_LOGINID);
         }
+
         String encodedPassword = pwEncoder.encode(memberRequest.getPassword());
 
         Member member = Member.builder()
@@ -44,6 +44,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
                 .interestingKeywords(new ArrayList<>())
                 .authorities(new ArrayList<>())
                 .build();
+
         member.addAuthority(Authority.builder().type(Authorities.ROLE_MEMBER).build());
         return memberRepository.save(member);
     }
@@ -61,7 +62,7 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     public void memberDelete(Long memberId) {
         Optional<Member> findMember = memberRepository.findById(memberId);
 
-        if(findMember.isEmpty()){
+        if (findMember.isEmpty()) {
             log.info("Member not found");
             throw new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST);
         }
