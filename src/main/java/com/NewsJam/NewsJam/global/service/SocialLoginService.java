@@ -21,26 +21,31 @@ public class SocialLoginService {
     @Value("${oauth.end-point.google}")
     private String GOOGLE_AUTH_ENDPOINT;
 
-    public OAuth2UserInfo verifyTokenAndGetOAuth2UserInfo(AuthProvider authProvider, String accessToken){
-        if(authProvider.equals(AuthProvider.GOOGLE)){
+    public OAuth2UserInfo verifyTokenAndGetOAuth2UserInfo(AuthProvider authProvider, String accessToken) {
+        if (authProvider.equals(AuthProvider.GOOGLE)) {
             return googleOAuth(accessToken);
+        } else {
+            throw new AuthenticationServiceException("지원하지 않는 소셜로그인 입니다.");
         }
-        else throw new AuthenticationServiceException("지원하지 않는 소셜로그인 입니다.");
     }
 
-    private OAuth2UserInfo googleOAuth(String accessToken){
-        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(GOOGLE_AUTH_ENDPOINT)
-                .queryParam("access_token", accessToken);
+    private OAuth2UserInfo googleOAuth(String accessToken) {
+        try {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(GOOGLE_AUTH_ENDPOINT)
+                    .queryParam("access_token", accessToken);
 
-        Map<String, Object> response = restTemplate.getForObject(uriBuilder.toUriString(), Map.class);
+            Map<String, Object> response = restTemplate.getForObject(uriBuilder.toUriString(), Map.class);
 
-        GoogleOAuth2UserInfo userInfo = new GoogleOAuth2UserInfo(response);
+            GoogleOAuth2UserInfo userInfo = new GoogleOAuth2UserInfo(response);
 
-        if(response == null){
-            throw new AuthenticationServiceException("access token이 올바르지 않습니다.");
+            if (response == null) {
+                throw new AuthenticationServiceException("access token이 올바르지 않습니다.");
+            }
+
+            return userInfo;
+        } catch (Exception e) {
+            throw new AuthenticationServiceException("구글 로그인 인증에 실패했습니다.");
         }
-
-        return userInfo;
     }
 
 
