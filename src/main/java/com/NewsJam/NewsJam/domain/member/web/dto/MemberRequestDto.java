@@ -10,7 +10,7 @@ public class MemberRequestDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Request{
+    public static class MemberRequest {
 
         @Schema(description = "사용자의 로그인 아이디", example="jinha123")
         String loginId;
