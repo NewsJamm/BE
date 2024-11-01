@@ -1,9 +1,11 @@
 package com.NewsJam.NewsJam.domain.news.web.dto;
 
+import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,7 +38,7 @@ public class NewsResponseDTO {
     @AllArgsConstructor
     public static class HotTopicNewsPage {
         @Schema(description = "핫 토픽 키워드 관련 뉴스 데이터 목록")
-        private List<HotTopicNews> news;
+        private List<NewsViewData> newsList;
         @Schema(description = "페이지 내 데이터 수", example = "3")
         private Integer listSize;
         @Schema(description = "전체 페이지 수", example = "5")
@@ -54,7 +56,7 @@ public class NewsResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class HotTopicNews {
+    public static class NewsViewData {
         @Schema(description = "뉴스 고유 번호", example = "5")
         private Long id;
         @Schema(description = "뉴스 제목", example = "호날두와 메시, 누가 더 강력할까?")
@@ -67,4 +69,24 @@ public class NewsResponseDTO {
         private String url;
     }
 
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class CategoryNewsPage {
+        @Schema(description = "선택된 뉴스 카테고리", example = "스포츠")
+        NewsCategory category;
+        @Schema(description = "카테고리 관련 뉴스 데이터 목록")
+        private List<NewsViewData> newsList;
+        @Schema(description = "페이지 내 데이터 수", example = "3")
+        private Integer listSize;
+        @Schema(description = "전체 페이지 수", example = "5")
+        private Integer totalPage;
+        @Schema(description = "전체 데이터 수", example = "36")
+        private Long totalElements;
+        @Schema(description = "첫 페이지 인지", example = "true")
+        private Boolean isFirst;
+        @Schema(description = "마지막 페이지 인지", example = "false")
+        private Boolean isLast;
+    }
 }
