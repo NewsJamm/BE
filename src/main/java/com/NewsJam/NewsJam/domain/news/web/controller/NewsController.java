@@ -95,7 +95,20 @@ public class NewsController {
         return ApiResponse.onSuccess(result);
     }
 
-
+    @Operation(summary = "카테고리별 뉴스 데이터 API 요청", description = "카테고리에 맞는 뉴스 데이터 페이징 검색 API")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "COMMON200",
+                    description = "요청 성공",
+                    content = {
+                            @Content(
+                                    schema = @Schema(
+                                            implementation = CategoryNewsPage.class
+                                    )
+                            )
+                    }
+            )
+    })
     @GetMapping("/category")
     public ApiResponse<NewsResponseDTO.CategoryNewsPage> getNewsPageWithCategory(
             @Valid @RequestParam(name = "category") @NotNull(message = "적절하지 않은 카테고리 입니다.") NewsCategory category,
