@@ -11,7 +11,7 @@ public class ViewCountIncreaseResponseDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class response {
+    public static class ViewCountIncreaseResponse {
         private Long id;
         private String url;
         private Long viewCnt;

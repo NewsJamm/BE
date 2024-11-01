@@ -7,7 +7,6 @@ import com.NewsJam.NewsJam.domain.member.exception.UserNotExistException;
 import com.NewsJam.NewsJam.domain.member.repository.MemberRepository;
 import com.NewsJam.NewsJam.domain.member.web.dto.InterestingKeywordsRequestDto;
 import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
-import com.NewsJam.NewsJam.global.annotation.LoginMember;
 import com.NewsJam.NewsJam.global.enums.statuscode.ErrorStatus;
 import com.NewsJam.NewsJam.global.exception.GeneralException;
 import java.util.ArrayList;
@@ -27,17 +26,17 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     private final PasswordEncoder pwEncoder;
 
     @Override
-    public Member join(MemberRequestDto.Request request) {
-        log.info("Member request: {}", request);
-        if (memberRepository.findByLoginId(request.getLoginId()).isPresent()) {
+    public Member join(MemberRequestDto.MemberRequest memberRequest) {
+        log.info("Member request: {}", memberRequest);
+        if (memberRepository.findByLoginId(memberRequest.getLoginId()).isPresent()) {
             log.info("Member already exists");
             throw new GeneralException(ErrorStatus._EXIST_LOGINID);
         }
-        String encodedPassword = pwEncoder.encode(request.getName());
+        String encodedPassword = pwEncoder.encode(memberRequest.getName());
 
         Member member = Member.builder()
-                .loginId(request.getLoginId())
-//                .memberName(request.getName())
+                .loginId(memberRequest.getLoginId())
+//                .memberName(memberRequest.getName())
                 .loginPw(encodedPassword)
                 .scrapList(new ArrayList<>())
                 .interestingKeywords(new ArrayList<>())
@@ -49,11 +48,11 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public void updateKeywords(InterestingKeywordsRequestDto.Request request, Long memberId) {
+    public void updateKeywords(InterestingKeywordsRequestDto.InterestingKeywordRequest interestingKeywordRequest, Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST));
 
-        member.addInterestingKeywords(request.getInterestingKeywords());
+        member.addInterestingKeywords(interestingKeywordRequest.getInterestingKeywords());
         memberRepository.save(member);
     }
 

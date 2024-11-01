@@ -9,7 +9,7 @@ public class ViewCountIncreaseRequestDto {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Request{
+    public static class ViewCountIncreaseRequest {
         String url;
     }
 }
