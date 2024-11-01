@@ -46,13 +46,17 @@ public class NewsSchedulerService {
     public void scheduled() {
         log.info(":::: 뉴스 스케줄러 실행 ::::");
 
-        List<String> keywords = trendKeywordService.getTrendKeyword();
+        try {
+            List<String> keywords = trendKeywordService.getTrendKeyword();
 
-        Keywords keywordDTO = new Keywords(keywords);
+            Keywords keywordDTO = new Keywords(keywords);
 
-        List<NewsData> news = newsService.getNews(keywordDTO);
+            List<NewsData> news = newsService.getNews(keywordDTO);
 
-        saveNews(news);
+            saveNews(news);
+        } catch (Exception e) {
+            log.error("오류 발생", e);
+        }
 
         // TODO 큐 시간 검증 구현
 
