@@ -25,7 +25,6 @@ import java.util.Queue;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,7 +41,7 @@ public class NewsSchedulerService {
     private static List<Word> wordList = new ArrayList<>();
     private static Map<String, Word> wordAddressMap = new HashMap<>();
 
-    @Scheduled(fixedDelay = 300000)
+    //    @Scheduled(fixedDelay = 300000)
     public void scheduled() {
         log.info(":::: 뉴스 스케줄러 실행 ::::");
 
