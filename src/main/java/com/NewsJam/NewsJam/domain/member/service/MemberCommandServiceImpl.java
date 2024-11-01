@@ -48,8 +48,8 @@ public class MemberCommandServiceImpl implements MemberCommandService {
     }
 
     @Override
-    public void updateKeywords(InterestingKeywordsRequestDto.Request request) {
-        Member member = memberRepository.findById(request.getUserId())
+    public void updateKeywords(InterestingKeywordsRequestDto.Request request, Member member) {
+        Member getMember = memberRepository.findById(member.getId())
                 .orElseThrow(() -> new UserNotExistException(ErrorStatus._MEMBER_NOT_EXIST));
 
         member.addInterestingKeywords(request.getInterestingKeywords());

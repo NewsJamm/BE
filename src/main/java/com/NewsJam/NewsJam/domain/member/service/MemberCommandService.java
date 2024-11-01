@@ -6,5 +6,5 @@ import com.NewsJam.NewsJam.domain.member.web.dto.MemberRequestDto;
 
 public interface MemberCommandService {
     Member join(MemberRequestDto.Request request);
-    void updateKeywords(InterestingKeywordsRequestDto.Request request);
+    void updateKeywords(InterestingKeywordsRequestDto.Request request, Member member);
 }
