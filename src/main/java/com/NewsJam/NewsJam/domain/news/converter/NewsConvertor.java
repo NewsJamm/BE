@@ -2,11 +2,11 @@ package com.NewsJam.NewsJam.domain.news.converter;
 
 import com.NewsJam.NewsJam.domain.news.entity.News;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO;
-import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicNews;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicNewsPage;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicWord;
-import java.util.ArrayList;
+import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.NewsViewData;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
 
 public class NewsConvertor {
@@ -18,25 +18,27 @@ public class NewsConvertor {
     }
 
     public static NewsResponseDTO.HotTopicNewsPage toHotTopicNewsPage(Page<News> news) {
-        List<HotTopicNews> newsList = new ArrayList<>();
-        for (News newsData : news.getContent()) {
-            HotTopicNews topicNews = HotTopicNews.builder()
-                    .id(newsData.getId())
-                    .title(newsData.getNewsTitle())
-                    .content(newsData.getNewsContent())
-                    .url(newsData.getOriginalLink())
-                    .publish_date(newsData.getPubDate())
-                    .build();
-            newsList.add(topicNews);
-        }
+        List<NewsViewData> newsList = news.getContent().stream()
+                .map(data -> toNewsViewData(data))
+                .collect(Collectors.toList());
 
         return HotTopicNewsPage.builder()
-                .news(newsList)
+                .newsList(newsList)
                 .isLast(news.isLast())
                 .isFirst(news.isFirst())
                 .totalPage(news.getTotalPages())
                 .totalElements(news.getTotalElements())
                 .listSize(news.getSize())
+                .build();
+    }
+
+    public static NewsResponseDTO.NewsViewData toNewsViewData(News news) {
+        return NewsViewData.builder()
+                .id(news.getId())
+                .title(news.getNewsTitle())
+                .content(news.getNewsContent())
+                .url(news.getOriginalLink())
+                .publish_date(news.getPubDate())
                 .build();
     }
 }
