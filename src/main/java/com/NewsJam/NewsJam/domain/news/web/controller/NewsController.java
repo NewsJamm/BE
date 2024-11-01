@@ -2,9 +2,11 @@ package com.NewsJam.NewsJam.domain.news.web.controller;
 
 import com.NewsJam.NewsJam.domain.news.converter.NewsConvertor;
 import com.NewsJam.NewsJam.domain.news.entity.News;
+import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
 import com.NewsJam.NewsJam.domain.news.service.NewsQueryService;
 import com.NewsJam.NewsJam.domain.news.service.scheduler.NewsSchedulerService;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO;
+import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.CategoryNewsPage;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicNewsPage;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicWord;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicWordList;
@@ -90,6 +92,20 @@ public class NewsController {
                 pageSize);
 
         HotTopicNewsPage result = NewsConvertor.toHotTopicNewsPage(hotTopicKeywordNewsPage);
+        return ApiResponse.onSuccess(result);
+    }
+
+
+    @GetMapping("/category")
+    public ApiResponse<NewsResponseDTO.CategoryNewsPage> getNewsPageWithCategory(
+            @Valid @RequestParam(name = "category") @NotNull(message = "적절하지 않은 카테고리 입니다.") NewsCategory category,
+            @Valid @RequestParam(name = "sortStatus") @NotNull(message = "적절하지 않은 정렬 기준입니다.") SortStatus sortStatus,
+            @Pageable @RequestParam(name = "page") Integer page,
+            @Pageable @RequestParam(name = "pageSize") Integer pageSize) {
+        Page<News> categoryNewsPage = newsQueryService.getCategoryNewsPage(category, page, pageSize, sortStatus);
+
+        CategoryNewsPage result = NewsConvertor.toCategoryNewsPage(categoryNewsPage, category);
+
         return ApiResponse.onSuccess(result);
     }
 }
