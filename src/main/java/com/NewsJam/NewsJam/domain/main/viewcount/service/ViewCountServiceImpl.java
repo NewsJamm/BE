@@ -19,7 +19,7 @@ public class ViewCountServiceImpl implements ViewCountService {
     private final NewsRepository newsRepository;
 
     @Override
-    public ViewCountIncreaseResponseDto.response increaseViewCount(String url) {
+    public ViewCountIncreaseResponseDto.ViewCountIncreaseResponse increaseViewCount(String url) {
         Optional<News> found = newsRepository.findByOriginalLink(url);
 
         if(found.isEmpty()){
@@ -31,7 +31,7 @@ public class ViewCountServiceImpl implements ViewCountService {
         news.increaseViewCnt();
         log.info("Increase view count");
 
-        return ViewCountIncreaseResponseDto.response.builder()
+        return ViewCountIncreaseResponseDto.ViewCountIncreaseResponse.builder()
                 .id(news.getId())
                 .url(news.getOriginalLink())
                 .viewCnt(news.getViewCnt())
