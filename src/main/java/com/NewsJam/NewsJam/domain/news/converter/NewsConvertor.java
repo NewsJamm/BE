@@ -7,6 +7,8 @@ import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.CategoryNewsPage;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicNewsPage;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.HotTopicWord;
 import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.NewsViewData;
+import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.PickNewsData;
+import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.PickNewsPage;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.data.domain.Page;
@@ -58,6 +60,26 @@ public class NewsConvertor {
                 .totalPage(news.getTotalPages())
                 .totalElements(news.getTotalElements())
                 .listSize(news.getSize())
+                .build();
+    }
+
+    public static PickNewsData toPickNewsData(String keyword, NewsViewData pickNews, List<NewsViewData> recommendNewsData){
+        return PickNewsData.builder()
+                .keyword(keyword)
+                .pickNews(pickNews)
+                .recommendNews(recommendNewsData)
+                .build();
+    }
+
+    public static PickNewsPage toPickNewsPage(List<PickNewsData> pickNewsDataList, Integer listSize, Long totalElements, Integer totalPage,
+                                              Boolean isFirst, Boolean isLast){
+        return PickNewsPage.builder()
+                .pickNewsDataList(pickNewsDataList)
+                .listSize(listSize)
+                .totalElements(totalElements)
+                .totalPage(totalPage)
+                .isFirst(isFirst)
+                .isLast(isLast)
                 .build();
     }
 }

@@ -65,15 +65,19 @@ public class NewsSchedulerService {
         log.info(":::: 뉴스 스케줄러 종료 ::::");
     }
 
-    public List<NewsResponseDTO.HotTopicWord> getHotTopicWords(int wordCount) {
+    public List<NewsResponseDTO.HotTopicWord> getHotTopicWords(int page, int wordCount) {
         List<NewsResponseDTO.HotTopicWord> words = new ArrayList<>();
-        int len = Math.min(wordCount, wordList.size());
-        for (int i = 0; i < len; i++) {
+        int len = Math.min(page * wordCount, wordList.size());
+        for (int i = (page - 1) * wordCount ; i < len; i++) {
             Word word = wordList.get(i);
             words.add(NewsConvertor.toHotTopicWord(word.getKeyword(), word.getNewsCount()));
         }
 
         return words;
+    }
+
+    public int getTopicWordSize(){
+        return wordList.size();
     }
 
     private void saveNews(List<NewsData> news) {

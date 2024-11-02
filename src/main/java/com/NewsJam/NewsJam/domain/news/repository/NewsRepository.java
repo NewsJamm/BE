@@ -27,4 +27,5 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     @Query("SELECT n FROM News n JOIN n.keywordList keyword WHERE keyword.keyword = :keyword")
     Page<News> findDistinctByKeywordsWord(String keyword, Pageable pageable);
 
+    Optional<News> findByVectorIdx(Long vectorIdx);
 }

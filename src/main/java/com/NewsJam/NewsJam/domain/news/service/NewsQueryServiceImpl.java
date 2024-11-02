@@ -1,10 +1,18 @@
 package com.NewsJam.NewsJam.domain.news.service;
 
+import com.NewsJam.NewsJam.domain.news.converter.NewsConvertor;
 import com.NewsJam.NewsJam.domain.news.entity.News;
 import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
 import com.NewsJam.NewsJam.domain.news.repository.NewsRepository;
+import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorRequestDTO.RecommendVectorRequestDTO;
+import com.NewsJam.NewsJam.domain.news.service.dto.NewsVectorResponseDTO.RecommendVectorResponseDTO;
+import com.NewsJam.NewsJam.domain.news.web.dto.NewsResponseDTO.NewsViewData;
+import com.NewsJam.NewsJam.global.enums.statuscode.ErrorStatus;
+import com.NewsJam.NewsJam.global.exception.GeneralException;
 import com.NewsJam.NewsJam.global.paging.enums.SortStatus;
 import com.NewsJam.NewsJam.global.paging.exception.InvalidSortStatusException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -20,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class NewsQueryServiceImpl implements NewsQueryService {
     private final NewsRepository newsRepository;
+    private final NewsVectorService newsVectorService;
 
     @Override
     public Page<News> getHotTopicKeywordNewsPage(String keyword, SortStatus sortStatus, Integer page,
@@ -43,12 +52,31 @@ public class NewsQueryServiceImpl implements NewsQueryService {
         if (sortStatus == SortStatus.LATEST) {
             sort = Sort.by(Sort.Direction.DESC, "createdAt");
         } else if (sortStatus == SortStatus.POPULAR) {
-            sort = Sort.by(Sort.Direction.DESC, "viewCount");
+            sort = Sort.by(Sort.Direction.DESC, "viewCnt");
         } else {
             throw new InvalidSortStatusException();
         }
         return PageRequest.of(page - 1, pageSize, sort);
     }
 
+    @Override
+    public List<NewsViewData> getRecommendNewsList(Long vectorIdx, Integer count){
+        RecommendVectorRequestDTO request = RecommendVectorRequestDTO.builder()
+                .faiss_index(vectorIdx)
+                .recommend_count(count)
+                .build();
+
+        List<Integer> indices = newsVectorService.getRecommendVectorNews(request).getIndices();
+
+        Long testIndex = (long)indices.get(0);
+        newsRepository.findByVectorIdx(testIndex);
+
+        List<News> recommendNews = indices.stream()
+                .map(index -> newsRepository.findByVectorIdx((long) index).orElseThrow(() -> new GeneralException(
+                        ErrorStatus._NEWS_NOT_IMBEDDED))).collect(Collectors.toList());
+
+        return recommendNews.stream().map(NewsConvertor::toNewsViewData).collect(Collectors.toList());
+
+    }
 
 }

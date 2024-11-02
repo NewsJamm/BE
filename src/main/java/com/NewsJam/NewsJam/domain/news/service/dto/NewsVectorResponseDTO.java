@@ -24,5 +24,10 @@ public class NewsVectorResponseDTO {
         private Double score;
     }
 
+    @Data
+    @ToString
+    public static class RecommendVectorResponseDTO {
+        private List<Integer> indices;
+    }
 
 }

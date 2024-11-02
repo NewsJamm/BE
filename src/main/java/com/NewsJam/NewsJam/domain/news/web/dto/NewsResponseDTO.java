@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 
 @Schema(title = "NewsResponseDTO", description = "뉴스 데이터 응답 DTO")
 public class NewsResponseDTO {
@@ -72,7 +73,7 @@ public class NewsResponseDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    @Data
+    @Getter
     public static class CategoryNewsPage {
         @Schema(description = "선택된 뉴스 카테고리", example = "스포츠")
         NewsCategory category;
@@ -89,4 +90,41 @@ public class NewsResponseDTO {
         @Schema(description = "마지막 페이지 인지", example = "false")
         private Boolean isLast;
     }
+
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PickNewsPage{
+        @Schema(description = "Pick 뉴스 데이터 목록")
+        private List<PickNewsData> pickNewsDataList;
+        @Schema(description = "페이지 내 데이터 수", example = "3")
+        private Integer listSize;
+        @Schema(description = "전체 페이지 수", example = "5")
+        private Integer totalPage;
+        @Schema(description = "전체 데이터 수", example = "36")
+        private Long totalElements;
+        @Schema(description = "첫 페이지 인지", example = "true")
+        private Boolean isFirst;
+        @Schema(description = "마지막 페이지 인지", example = "false")
+        private Boolean isLast;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PickNewsData{
+        @Schema(description = "뉴스 키워드")
+        public String keyword;
+
+        @Schema(description = "Pick 뉴스 데이터")
+        public NewsViewData pickNews;
+
+        @Schema(description = "Pick 뉴스 관련 추천 뉴스")
+        public List<NewsViewData> recommendNews;
+    }
+
+
 }
