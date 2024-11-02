@@ -35,6 +35,22 @@ public class NewsVectorServiceImpl implements NewsVectorService {
                 .block();
     }
 
+    @Override
+    public NewsVectorResponseDTO.RecommendVectorResponseDTO getRecommendVectorNews(
+            NewsVectorRequestDTO.RecommendVectorRequestDTO request
+    ){
+        if(this.webClient == null){
+            webClient = initWebClient();
+        }
+
+        return webClient.post()
+                .uri(baseUrl + "/api/recommend")
+                .bodyValue(request)
+                .retrieve()
+                .bodyToMono(NewsVectorResponseDTO.RecommendVectorResponseDTO.class)
+                .block();
+    }
+
 
     public WebClient initWebClient() {
         return WebClient.builder()

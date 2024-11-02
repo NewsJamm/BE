@@ -14,8 +14,17 @@ public class NewsVectorRequestDTO {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	public static class VectorizeRequestDTO {
-		String news_title;
-		String news_content;
-		NewsCategory category;
+		private String news_title;
+		private String news_content;
+		private NewsCategory category;
+	}
+
+	@Builder
+	@Getter
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class RecommendVectorRequestDTO{
+		private Long faiss_index;
+		private Integer recommend_count;
 	}
 }

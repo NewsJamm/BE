@@ -29,4 +29,5 @@ public class NewsRequestDTO {
         private Integer page_size;
     }
 
+
 }

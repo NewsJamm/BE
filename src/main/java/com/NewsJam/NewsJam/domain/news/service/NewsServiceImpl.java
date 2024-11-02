@@ -38,7 +38,7 @@ public class NewsServiceImpl implements NewsService {
     public String getParsedString(String rawTitle) {
         String result = rawTitle.replaceAll("<b>|</b>", "");
         result = result.replaceAll("&quot;", "\"");
-        log.info("::parsed String : {}::", result);
+//        log.info("::parsed String : {}::", result);
         return result;
     }
 

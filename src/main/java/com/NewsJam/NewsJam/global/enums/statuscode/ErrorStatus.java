@@ -14,6 +14,7 @@ public enum ErrorStatus implements BaseCode {
 
     // news
     _NEWS_NOT_EXIST(HttpStatus.NOT_FOUND, "NEWS4001", "존재하지 않는 뉴스입니다."),
+    _NEWS_NOT_IMBEDDED(HttpStatus.INTERNAL_SERVER_ERROR, "NEWS5001", "인덱스에 해당하는 뉴스가 존재하지 않습니다."),
 
     // member
     _MEMBER_NOT_EXIST(HttpStatus.NOT_FOUND, "MEMBER4002", "존재하지 않는 사용자입니다."),
