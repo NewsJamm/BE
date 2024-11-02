@@ -128,6 +128,20 @@ public class NewsController {
         return ApiResponse.onSuccess(result);
     }
 
+    @Operation(summary = "PICK 부분 뉴스 데이터 API 요청", description = "PICK 부분 뉴스 데이터 API 요청")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "COMMON200",
+                    description = "요청 성공",
+                    content = {
+                            @Content(
+                                    schema = @Schema(
+                                            implementation = PickNewsPage.class
+                                    )
+                            )
+                    }
+            )
+    })
     @GetMapping("/pick")
     public ApiResponse<PickNewsPage> getPickNewsPage(
             @Pageable @RequestParam(name = "page") @Schema(description = "paging 에서 불러올 page 번호 (최소 1)", example = "1") Integer page,
