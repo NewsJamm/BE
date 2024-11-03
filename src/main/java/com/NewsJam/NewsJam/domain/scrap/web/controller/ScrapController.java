@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,7 +42,7 @@ public class ScrapController {
     @PostMapping("/scrap")
     public ApiResponse<ScrapResponseDto.ScrapResponse> scrap(
             @Valid @RequestBody
-            @Parameter(description = "Details of the scrap request") ScrapRequestDto.ScrapRequest scrapRequestDto, @LoginMember Member member) {
+            @Parameter(description = "Details of the scrap request") ScrapRequestDto.ScrapRequest scrapRequestDto, @ApiIgnore @LoginMember Member member) {
         log.info("scrap request: {}", scrapRequestDto);
         log.info("memberId: {}", member.getId());
 
@@ -61,7 +62,7 @@ public class ScrapController {
     @DeleteMapping("/scrapUndo")
     public ApiResponse<ScrapUndoResponseDto.ScrapUndoResponse> scrapUndo(
             @Valid @RequestBody
-            @Parameter(description = "Details of the scrap undo request") ScrapUndoRequestDto.ScrapUndoRequest undoRequestDto, @LoginMember Member member) {
+            @Parameter(description = "Details of the scrap undo request") ScrapUndoRequestDto.ScrapUndoRequest undoRequestDto, @ApiIgnore @LoginMember Member member) {
         log.info("undo request: {}", undoRequestDto);
         log.info("member: {}", member.getId());
 
