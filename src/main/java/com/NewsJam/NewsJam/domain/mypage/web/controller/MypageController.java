@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class MypageController {
     public ApiResponse<ScrapNewsListResponseDto.ScrapNewsList> getScrapList(
 
             @Parameter(description = "스크랩 뉴스 리스트 조회 요청 정보", required = true)
-            @LoginMember Member member) {
+           @ApiIgnore @LoginMember Member member) {
 
         log.info(":: MypageController Called ::");
         log.info("memberId: {}", member.getId());

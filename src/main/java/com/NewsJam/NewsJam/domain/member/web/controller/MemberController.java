@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @Slf4j
@@ -56,7 +57,7 @@ public class MemberController {
                     content = @Content)
     })
     @PostMapping("/api/interesting-keywords")
-    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.InterestingKeywordRequest interestingKeywordRequest, @LoginMember Member member) {
+    public ApiResponse<?> interestingKeywords(@Valid @RequestBody InterestingKeywordsRequestDto.InterestingKeywordRequest interestingKeywordRequest, @ApiIgnore @LoginMember Member member) {
         memberCommandService.updateKeywords(interestingKeywordRequest, member.getId());
 
         return ApiResponse.onSuccess("키워드 저장에 성공하였습니다.");
@@ -72,7 +73,7 @@ public class MemberController {
                     content = @Content)
     })
     @DeleteMapping("/api/memberDelete")
-    public ApiResponse<?> userDelete(@LoginMember Member member) {
+    public ApiResponse<?> userDelete(@ApiIgnore @LoginMember Member member) {
         log.info("request memberId = {}",member.getId());
 
         memberCommandService.memberDelete(member.getId());
