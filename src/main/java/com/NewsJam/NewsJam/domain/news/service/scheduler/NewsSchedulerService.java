@@ -25,7 +25,6 @@ import java.util.Queue;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,7 +41,7 @@ public class NewsSchedulerService {
     private static List<Word> wordList = new ArrayList<>();
     private static Map<String, Word> wordAddressMap = new HashMap<>();
 
-    @Scheduled(fixedDelay = 300000)
+    //    @Scheduled(fixedDelay = 300000)
     public void scheduled() {
         log.info(":::: 뉴스 스케줄러 실행 ::::");
 
@@ -68,7 +67,7 @@ public class NewsSchedulerService {
     public List<NewsResponseDTO.HotTopicWord> getHotTopicWords(int page, int wordCount) {
         List<NewsResponseDTO.HotTopicWord> words = new ArrayList<>();
         int len = Math.min(page * wordCount, wordList.size());
-        for (int i = (page - 1) * wordCount ; i < len; i++) {
+        for (int i = (page - 1) * wordCount; i < len; i++) {
             Word word = wordList.get(i);
             words.add(NewsConvertor.toHotTopicWord(word.getKeyword(), word.getNewsCount()));
         }
@@ -76,7 +75,7 @@ public class NewsSchedulerService {
         return words;
     }
 
-    public int getTopicWordSize(){
+    public int getTopicWordSize() {
         return wordList.size();
     }
 

@@ -11,13 +11,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,9 +34,7 @@ public class MypageController {
     })
     @GetMapping("/getScrapList")
     public ApiResponse<ScrapNewsListResponseDto.ScrapNewsList> getScrapList(
-
-            @Parameter(description = "스크랩 뉴스 리스트 조회 요청 정보", required = true)
-           @ApiIgnore @LoginMember Member member) {
+            @Parameter(hidden = true) @LoginMember Member member) {
 
         log.info(":: MypageController Called ::");
         log.info("memberId: {}", member.getId());

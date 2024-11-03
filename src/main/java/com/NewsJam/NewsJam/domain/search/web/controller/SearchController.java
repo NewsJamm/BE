@@ -34,7 +34,7 @@ public class SearchController {
     @GetMapping("/search")
     public ApiResponse<SearchResultResponseDto.SearchResult> search(
             @RequestParam
-            @Parameter(description = "검색어", example = "search?query=손흥민") String query) {
+            @Parameter(description = "검색어", example = "손흥민") String query) {
         log.info("Search query: {}", query);
         SearchResultResponseDto.SearchResult response = searchService.search(query);
         return ApiResponse.onSuccess(response);
