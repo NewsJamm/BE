@@ -42,7 +42,7 @@ public class NewsSchedulerService {
     private static List<Word> wordList = new ArrayList<>();
     private static Map<String, Word> wordAddressMap = new HashMap<>();
 
-    @Scheduled(fixedDelay = 600000)
+//    @Scheduled(fixedDelay = 600000)
     public void scheduled() {
         log.info(":::: 뉴스 스케줄러 실행 ::::");
 
