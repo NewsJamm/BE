@@ -6,6 +6,7 @@ import com.NewsJam.NewsJam.domain.news.entity.Keyword;
 import com.NewsJam.NewsJam.domain.news.entity.News;
 import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
 import com.NewsJam.NewsJam.domain.news.repository.NewsRepository;
+import com.NewsJam.NewsJam.domain.news.service.NewsImageService;
 import com.NewsJam.NewsJam.domain.news.service.NewsService;
 import com.NewsJam.NewsJam.domain.news.service.NewsVectorService;
 import com.NewsJam.NewsJam.domain.news.service.TrendKeywordService;
@@ -37,6 +38,7 @@ public class NewsSchedulerService {
     private final NewsVectorService newsVectorService;
     private final NewsRepository newsRepository;
     private final ChatBotService chatBotService;
+    private final NewsImageService newsImageService;
 
     private static Queue<Long> newsIdQueue = new LinkedList<>();
     private static List<Word> wordList = new ArrayList<>();
@@ -92,9 +94,11 @@ public class NewsSchedulerService {
 
             NewsCategory category = chatBotService.getNewsCategory(newsData.getTitle());
 
+            String image_url = newsImageService.getImageUrl(newsData.getOriginalLink());
+
             VectorizeResponseDTO vectorizeResponseDTO = vectorizeNews(newsData, category);
 
-            News saved = saveNewsEntity(newsData, vectorizeResponseDTO, category);
+            News saved = saveNewsEntity(newsData, vectorizeResponseDTO, category, image_url);
 
             newsIdQueue.offer(saved.getId());
 
@@ -129,7 +133,7 @@ public class NewsSchedulerService {
     }
 
     private News saveNewsEntity(NewsData newsData, VectorizeResponseDTO vectorizeResponseDTO,
-                                NewsCategory newsCategory) {
+                                NewsCategory newsCategory, String imageUrl) {
         News newsCreate = News.builder()
                 .newsTitle(newsData.getTitle())
                 .newsContent(newsData.getDescription())
@@ -138,6 +142,7 @@ public class NewsSchedulerService {
                 .pubDate(newsData.getPubDate())
                 .vectorIdx(vectorizeResponseDTO.getVectorIdx())
                 .viewCnt(0L)
+                .imageUrl(imageUrl)
                 .keywordList(new ArrayList<>())
                 .build();
 
