@@ -5,10 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 
 @Schema(title = "NewsResponseDTO", description = "뉴스 데이터 응답 DTO")
 public class NewsResponseDTO {
@@ -68,6 +66,8 @@ public class NewsResponseDTO {
         private String publish_date;
         @Schema(description = "뉴스 원본 링크", example = "https://www.pressian.com/pages/articles/2024110113442365418?utm_source=naver&utm_medium=search")
         private String url;
+        @Schema(description = "뉴스 메인 이미지 URL, 없을 경우 null", example = "https://www.elle.co.kr/resources/online/thumbnail/hf/2024/11/05/04bb9006-d171-4609-8d45-425f00870c9a.jpg")
+        private String image_url;
     }
 
     @Builder
@@ -96,7 +96,7 @@ public class NewsResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PickNewsPage{
+    public static class PickNewsPage {
         @Schema(description = "Pick 뉴스 데이터 목록")
         private List<PickNewsData> pickNewsDataList;
         @Schema(description = "페이지 내 데이터 수", example = "3")
@@ -115,7 +115,7 @@ public class NewsResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PickNewsData{
+    public static class PickNewsData {
         @Schema(description = "뉴스 키워드")
         public String keyword;
 

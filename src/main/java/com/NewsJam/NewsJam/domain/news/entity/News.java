@@ -1,9 +1,6 @@
 package com.NewsJam.NewsJam.domain.news.entity;
 
 import com.NewsJam.NewsJam.domain.news.enums.NewsCategory;
-
-import jakarta.persistence.*;
-
 import com.NewsJam.NewsJam.global.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -15,13 +12,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Entity
 @Builder
@@ -57,6 +52,9 @@ public class News extends BaseEntity {
     @OneToMany(mappedBy = "news", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Keyword> keywordList;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column(name = "viewCnt")
     private Long viewCnt;
 
@@ -67,7 +65,7 @@ public class News extends BaseEntity {
     }
 
     public void increaseViewCnt() {
-        System.out.println("viewCnt = "+viewCnt);
+        System.out.println("viewCnt = " + viewCnt);
         this.viewCnt++;
     }
 

@@ -11,7 +11,7 @@ public class NewsAPIResponseDto {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class NewsData{
+    public static class NewsData {
         String Description;
         String title;
         String pubDate;

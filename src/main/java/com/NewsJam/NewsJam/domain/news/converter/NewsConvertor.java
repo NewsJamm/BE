@@ -43,6 +43,7 @@ public class NewsConvertor {
                 .content(news.getNewsContent())
                 .url(news.getOriginalLink())
                 .publish_date(news.getPubDate())
+                .image_url(news.getImageUrl())
                 .build();
     }
 
@@ -63,7 +64,8 @@ public class NewsConvertor {
                 .build();
     }
 
-    public static PickNewsData toPickNewsData(String keyword, NewsViewData pickNews, List<NewsViewData> recommendNewsData){
+    public static PickNewsData toPickNewsData(String keyword, NewsViewData pickNews,
+                                              List<NewsViewData> recommendNewsData) {
         return PickNewsData.builder()
                 .keyword(keyword)
                 .pickNews(pickNews)
@@ -71,8 +73,9 @@ public class NewsConvertor {
                 .build();
     }
 
-    public static PickNewsPage toPickNewsPage(List<PickNewsData> pickNewsDataList, Integer listSize, Long totalElements, Integer totalPage,
-                                              Boolean isFirst, Boolean isLast){
+    public static PickNewsPage toPickNewsPage(List<PickNewsData> pickNewsDataList, Integer listSize, Long totalElements,
+                                              Integer totalPage,
+                                              Boolean isFirst, Boolean isLast) {
         return PickNewsPage.builder()
                 .pickNewsDataList(pickNewsDataList)
                 .listSize(listSize)
