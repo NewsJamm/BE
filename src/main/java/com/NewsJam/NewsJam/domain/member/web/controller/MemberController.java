@@ -60,7 +60,7 @@ public class MemberController {
     public ApiResponse<?> interestingKeywords(
             @Valid @RequestBody InterestingKeywordsRequestDto.InterestingKeywordRequest interestingKeywordRequest,
             @Parameter(hidden = true) @LoginMember Member member) {
-        memberCommandService.updateKeywords(interestingKeywordRequest, member.getId());
+//        memberCommandService.updateKeywords(interestingKeywordRequest, member.getId());
 
         return ApiResponse.onSuccess("키워드 저장에 성공하였습니다.");
     }

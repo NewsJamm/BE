@@ -67,6 +67,7 @@ public class NewsSchedulerService {
         log.info(":::: 뉴스 스케줄러 종료 ::::");
     }
 
+
     public List<NewsResponseDTO.HotTopicWord> getHotTopicWords(int page, int wordCount) {
         List<NewsResponseDTO.HotTopicWord> words = new ArrayList<>();
         int len = Math.min(page * wordCount, wordList.size());
